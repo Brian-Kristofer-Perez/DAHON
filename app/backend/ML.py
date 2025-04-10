@@ -5,22 +5,6 @@ import torch
 from PIL import Image
 
 
-# define the RESNET 9 model architecture
-class SimpleResidualBlock(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1, padding=1)
-        self.relu1 = nn.ReLU()
-        self.conv2 = nn.Conv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1, padding=1)
-        self.relu2 = nn.ReLU()
-
-    def forward(self, x):
-        out = self.conv1(x)
-        out = self.relu1(out)
-        out = self.conv2(out)
-        return self.relu2(out) + x # ReLU can be applied before or after adding the input
-
-
 # base class for the model
 class ImageClassificationBase(nn.Module): # most of this code is just training code, so it is omitted. Commented out.
     pass
@@ -72,7 +56,7 @@ class Result:
         self.probability = confidence_value
 
 # this is the ML model abstraction for the backend implementation
-class MLModel():
+class MLModel:
 
     def __init__(self):
         self.preprocess = transforms.Compose([transforms.Resize((256,256)),
