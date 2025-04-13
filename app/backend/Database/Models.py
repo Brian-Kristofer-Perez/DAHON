@@ -2,7 +2,7 @@ import sqlalchemy.orm
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import Relationship
 import DB
-from sqlalchemy.dialects.mysql import MEDIUMBLOB
+from sqlalchemy.dialects.mysql import MEDIUMBLOB # haha blob blob very funnyyy
 
 
 # Define the Base class from DB
@@ -26,6 +26,17 @@ class Scan(Base):
     diseaseID = Column('predicted_disease', ForeignKey('disease.id'))
     predicted_plant = Relationship('Plant')
     predicted_disease = Relationship('Disease')
+
+    def to_dict(self):
+        output = {
+                'image': self.image,
+                'date': self.date.isoformat(),
+                'predicted_plant': self.predicted_plant.to_dict(),
+                'predicted_disease': self.predicted_disease.to_dict(),
+                'probability': self.probability
+                }
+
+        return output
 
 
 class Plant(Base):
@@ -122,4 +133,5 @@ class Prevention(Base):
     prevention = Column('prevention', String(250))
 
 
-# Base.metadata.create_all(DB.engine)
+if __name__ == '__main__':
+    Base.metadata.create_all(DB.engine)
