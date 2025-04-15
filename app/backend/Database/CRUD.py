@@ -33,6 +33,7 @@ class Database:
 
     # query all scans made by user, returns array of scan objects.
     # actually... pretty much all queries return objects. See Models.py for reference (Optional!)
+    # all scans are ordered by date, ascending I believe
     def query_scans(self, userID: int) -> list[Models.Scan]:
         with Session() as session:
             statement = Select(Models.Scan).where(Models.Scan.userID == userID).order_by(Models.Scan.date)
@@ -70,11 +71,10 @@ class Database:
     # when passing image, use io.BytesIO (standard library) object
     # likewise with date, it uses datetime.datetime (standard library)
     # for plants and disease, use database models, not strings.
-    def add_scan(self, userID: int, image: io.BytesIO, date: datetime.datetime, probability: float, plant: Models.Plant, disease: Models.Disease):
+    def add_scan(self, userID: int, image: io.BytesIO, date: datetime.datetime, plant: Models.Plant, disease: Models.Disease):
         with Session() as session:
             scan = Models.Scan(userID = userID,
                                image = image,
-                               probability = probability,
                                predicted_plant = plant,
                                predicted_disease = disease,
                                plantID = plant.id,

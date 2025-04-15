@@ -133,7 +133,6 @@ CREATE TABLE `scan` (
   `userID` int DEFAULT NULL,
   `image` mediumblob,
   `datetime` datetime DEFAULT NULL,
-  `probability` float DEFAULT NULL,
   `predicted_plant` int DEFAULT NULL,
   `predicted_disease` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -266,4 +265,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-13 19:22:29
+-- Dump completed on 2025-04-15 15:32:41

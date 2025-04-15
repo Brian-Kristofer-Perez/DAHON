@@ -21,7 +21,6 @@ class Scan(Base):
     userID = Column('userID', ForeignKey('user.id'))
     image = Column('image', MEDIUMBLOB)
     date = Column('datetime', sqlalchemy.DATETIME)
-    probability = Column('probability', sqlalchemy.FLOAT)
     plantID = Column('predicted_plant', ForeignKey('plant.id'))
     diseaseID = Column('predicted_disease', ForeignKey('disease.id'))
     predicted_plant = Relationship('Plant')
@@ -33,7 +32,7 @@ class Scan(Base):
                 'date': self.date.isoformat(),
                 'predicted_plant': self.predicted_plant.to_dict(),
                 'predicted_disease': self.predicted_disease.to_dict(),
-                'probability': self.probability
+
                 }
 
         return output
