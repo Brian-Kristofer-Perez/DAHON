@@ -1,7 +1,7 @@
 import sqlalchemy.orm
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import Relationship
-import DB
+from . import DB
 from sqlalchemy.dialects.mysql import MEDIUMBLOB # haha blob blob very funnyyy
 
 # Define the Base class from DB

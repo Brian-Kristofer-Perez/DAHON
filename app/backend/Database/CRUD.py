@@ -1,7 +1,8 @@
-import io, datetime, Models, DB, sqlalchemy
+import io, datetime, sqlalchemy
 from sqlalchemy import Select
 from sqlalchemy.orm import selectinload
-
+from . import Models
+from . import DB
 
 engine = DB.engine
 Session = DB.SessionLocal
