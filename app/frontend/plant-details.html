@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Plant Details</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/plant-details.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="dashboard.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="capture.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="handbook.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="account.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="login.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Section -->
+            <div class="plant-details-header">
+                <div class="header-left">
+                <button onclick="window.history.back()" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                        Back to Previous Page
+                </button>
+                </div>
+                <div class="header-right">
+                    <div class="analysis-info">
+                        <span class="analysis-time">
+                            <i class="far fa-clock"></i>
+                            Analyzed: <span id="analysisTime">--</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="plant-details-container">
+                <!-- Disease Title Section -->
+                <div class="disease-header">
+                    <h1 id="diseaseName">Loading...</h1>
+                    <span class="scientific-name" id="scientificName">Loading...</span>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="content-grid">
+                    <!-- Left Column - Image, Overview, and Reference Images -->
+                    <div class="left-column">
+                        <div class="image-container">
+                            <img id="uploadedImage" src="" alt="Plant Disease Image" class="main-image">
+                        </div>
+                        <div class="overview-card">
+                                <h2><i class="fas fa-leaf"></i> Quick Overview</h2>
+                            <div id="affectedSpecies" class="overview-content">
+                                <h3>Affected Plants:</h3>
+                                <div class="affected-plants">Loading...</div>
+                                    </div>
+                        </div>
+                        <!-- Reference Images Section -->
+                        <div class="reference-images">
+                            <h2><i class="fas fa-images"></i> Reference Images</h2>
+                            <div class="image-grid" id="referenceImages">
+                                <!-- Images will be dynamically added here by noel/brian idk-->
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Right Column - Details Cards -->
+                    <div class="right-column">
+                        <!-- Cause & Severity -->
+                        <div class="detail-card">
+                                <h2><i class="fas fa-exclamation-circle"></i> Cause & Severity</h2>
+                            <div class="card-content">
+                                <p id="diseaseCause">Loading...</p>
+                                <p id="diseaseSeverity">Loading...</p>
+                            </div>
+                            </div>
+
+                        <!-- Symptoms -->
+                        <div class="detail-card">
+                            <h2><i class="fas fa-search"></i> Symptoms</h2>
+                            <div id="diseaseSymptoms" class="card-content">
+                                <ul>
+                                    <li>Loading symptoms...</li>
+                                </ul>
+                            </div>
+                            </div>
+
+                        <!-- Prevention -->
+                        <div class="detail-card">
+                            <h2><i class="fas fa-shield-alt"></i> Prevention</h2>
+                            <div id="diseasePrevention" class="card-content">
+                                <ul>
+                                    <li>Loading prevention methods...</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Treatment -->
+                        <div class="detail-card">
+                            <h2><i class="fas fa-first-aid"></i> Treatment</h2>
+                            <div id="diseaseTreatment" class="card-content">
+                                <ul>
+                                    <li>Loading treatment methods...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script>
+         // For demo only guyss 
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded - Starting to display results');
+            
+            // Get data from localStorage for now (backend integration here noel)
+            const analysisResultString = localStorage.getItem('analysisResult');
+            const uploadedImage = localStorage.getItem('uploadedImage');
+            
+            console.log('Retrieved from localStorage:', {
+                hasAnalysisResult: !!analysisResultString,
+                hasUploadedImage: !!uploadedImage
+            });
+
+            try {
+                const analysisResult = JSON.parse(analysisResultString || '{}');
+                console.log('Parsed analysis result:', analysisResult);
+
+                if (Object.keys(analysisResult).length > 0) {
+                    // Update basic information
+                    document.getElementById('diseaseName').textContent = analysisResult.disease;
+                    document.getElementById('scientificName').textContent = analysisResult.scientificName;
+                    document.getElementById('analysisTime').textContent = new Date(analysisResult.timestamp).toLocaleString();
+
+                    // Update affected plants
+                    if (analysisResult.affectedPlants) {
+                        const affectedPlantsHtml = `
+                            <h3>Affected Plants:</h3>
+                            <p><strong>Primarily:</strong> ${analysisResult.affectedPlants.primary.join(', ')}</p>
+                            <p><strong>Occasionally:</strong> ${analysisResult.affectedPlants.secondary.join(', ')}</p>
+                        `;
+                        document.getElementById('affectedSpecies').innerHTML = affectedPlantsHtml;
+                    }
+
+                    // Update cause and severity
+                    document.getElementById('diseaseCause').textContent = analysisResult.cause;
+                    document.getElementById('diseaseSeverity').textContent = analysisResult.severity;
+
+                    // Update lists
+                    function updateList(elementId, items) {
+                        if (items && items.length > 0) {
+                            const listHtml = items.map(item => `<li>${item}</li>`).join('');
+                            document.getElementById(elementId).innerHTML = `<ul>${listHtml}</ul>`;
+                        }
+                    }
+
+                    updateList('diseaseSymptoms', analysisResult.symptoms);
+                    updateList('diseasePrevention', analysisResult.prevention);
+                    updateList('diseaseTreatment', analysisResult.treatment);
+
+                    // Update reference images
+                    if (analysisResult.referenceImages && analysisResult.referenceImages.length > 0) {
+                        const imageGrid = document.getElementById('referenceImages');
+                        imageGrid.innerHTML = analysisResult.referenceImages.map(imageSrc => `
+                            <div class="reference-image">
+                                <img src="${imageSrc}" alt="${analysisResult.disease} Reference Image">
+                            </div>
+                        `).join('');
+
+                        // Add click handlers for reference images
+                        imageGrid.querySelectorAll('.reference-image').forEach(image => {
+                            image.addEventListener('click', () => {
+                                const img = image.querySelector('img');
+                                openImageViewer(img.src);
+                            });
+                        });
+                    } else {
+                        // Add placeholder reference images
+                        const placeholderImages = [
+                            'assets/plant-diseases/placeholder-1.jpg',
+                            'assets/plant-diseases/placeholder-2.jpg',
+                            'assets/plant-diseases/placeholder-3.jpg',
+                            'assets/plant-diseases/placeholder-4.jpg'
+                        ];
+
+                        const imageGrid = document.getElementById('referenceImages');
+                        imageGrid.innerHTML = placeholderImages.map((src, index) => `
+                            <div class="reference-image">
+                                <img src="${src}" alt="Reference Image ${index + 1}">
+                            </div>
+                        `).join('');
+
+                        // Add click handlers for placeholder images
+                        imageGrid.querySelectorAll('.reference-image').forEach(image => {
+                            image.addEventListener('click', () => {
+                                const img = image.querySelector('img');
+                                openImageViewer(img.src);
+                            });
+                        });
+                    }
+                }
+
+                // Display uploaded image
+                if (uploadedImage) {
+                    const imgElement = document.getElementById('uploadedImage');
+                    imgElement.src = uploadedImage;
+                    imgElement.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error processing analysis result:', error);
+            }
+
+            // Clear localStorage
+            localStorage.removeItem('analysisResult');
+            localStorage.removeItem('uploadedImage');
+        });
+
+        function openImageViewer(imageSrc) {
+            const viewer = document.createElement('div');
+            viewer.className = 'image-viewer';
+            viewer.innerHTML = `
+                <div class="image-viewer-content">
+                    <button class="close-button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <img src="${imageSrc}" alt="Full size image">
+                </div>
+            `;
+
+            document.body.appendChild(viewer);
+            // Trigger reflow
+            viewer.offsetHeight;
+            viewer.classList.add('active');
+
+            viewer.addEventListener('click', (e) => {
+                if (e.target === viewer || e.target.closest('.close-button')) {
+                    viewer.classList.remove('active');
+                    setTimeout(() => {
+                        viewer.remove();
+                    }, 300);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

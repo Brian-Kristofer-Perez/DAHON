@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Account Settings</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="dashboard.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="capture.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="handbook.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="account.html" class="sidebar-menu-item active">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="login.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="account-container">
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="assets/avatar/user-img.png" alt="User Avatar" id="currentAvatar">
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera"></i>
+                                <span>Change Avatar</span>
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="username">@User-Name</h1>
+                            <p class="email">user@email.com</p>
+                            <p class="join-date">Member since April 2025</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tabs -->
+                <div class="settings-tabs">
+                    <button class="tab-button active" data-tab="profile">
+                        <i class="fas fa-user"></i> Profile
+                    </button>
+                    <button class="tab-button" data-tab="security">
+                        <i class="fas fa-lock"></i> Security
+                    </button>
+                </div>
+
+                <!-- Profile Settings -->
+                <div class="settings-content" id="profileSettings">
+                    <div class="settings-card">
+                        <h2>Profile Information</h2>
+                        <form id="profileForm" class="settings-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Contact Number</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="Enter your contact number">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h2>Avatar Settings</h2>
+                        <div class="avatar-upload">
+                            <p class="upload-info">
+                                <i class="fas fa-info-circle"></i>
+                                Supported formats: SVG, JPG, PNG (10mb each)
+                            </p>
+                            <label for="avatarUpload" class="upload-button">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Upload New Avatar
+                            </label>
+                            <input type="file" id="avatarUpload" accept="image/*" hidden>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="settings-content hidden" id="securitySettings">
+                    <div class="settings-card">
+                        <h2>Change Password</h2>
+                        <form id="passwordForm" class="settings-form">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter your current password">
+                                    <button type="button" class="toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter your new password">
+                                    <button type="button" class="toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password">
+                                    <button type="button" class="toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="password-requirements">
+                                <h3>Password Requirements:</h3>
+                                <ul>
+                                    <li data-requirement="length">
+                                        <i class="fas fa-circle"></i>
+                                        At least 8 characters long
+                                    </li>
+                                    <li data-requirement="uppercase">
+                                        <i class="fas fa-circle"></i>
+                                        Contains uppercase letter
+                                    </li>
+                                    <li data-requirement="lowercase">
+                                        <i class="fas fa-circle"></i>
+                                        Contains lowercase letter
+                                    </li>
+                                    <li data-requirement="number">
+                                        <i class="fas fa-circle"></i>
+                                        Contains number
+                                    </li>
+                                    <li data-requirement="special">
+                                        <i class="fas fa-circle"></i>
+                                        Contains special character
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span class="toast-message">Changes saved successfully!</span>
+        </div>
+        <div class="toast-progress"></div>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script>
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const settingsContents = document.querySelectorAll('.settings-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                settingsContents.forEach(content => content.classList.add('hidden'));
+
+                button.classList.add('active');
+                const tabId = button.dataset.tab + 'Settings';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        // Password visibility toggle
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.parentElement.querySelector('input');
+                const icon = button.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Password validation
+        const newPasswordInput = document.getElementById('newPassword');
+        const requirements = {
+            length: str => str.length >= 8,
+            uppercase: str => /[A-Z]/.test(str),
+            lowercase: str => /[a-z]/.test(str),
+            number: str => /[0-9]/.test(str),
+            special: str => /[^A-Za-z0-9]/.test(str)
+        };
+
+        newPasswordInput.addEventListener('input', () => {
+            const password = newPasswordInput.value;
+            
+            for (const [requirement, validateFunc] of Object.entries(requirements)) {
+                const li = document.querySelector(`[data-requirement="${requirement}"]`);
+                const icon = li.querySelector('i');
+                
+                if (validateFunc(password)) {
+                    li.classList.add('valid');
+                    icon.classList.remove('fa-circle');
+                    icon.classList.add('fa-check-circle');
+                } else {
+                    li.classList.remove('valid');
+                    icon.classList.remove('fa-check-circle');
+                    icon.classList.add('fa-circle');
+                }
+            }
+        });
+
+        // Avatar upload preview
+        const avatarUpload = document.getElementById('avatarUpload');
+        const currentAvatar = document.getElementById('currentAvatar');
+
+        avatarUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentAvatar.src = e.target.result;
+                    showToast('Avatar updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission handlers
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add profile update logic here
+            showToast('Profile updated successfully!');
+        });
+
+        document.getElementById('passwordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showToast('Passwords do not match!', 'error');
+                return;
+            }
+
+            // Add password update logic here
+            showToast('Password updated successfully!');
+        });
+
+        // notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = toast.querySelector('.toast-message');
+            const icon = toast.querySelector('i');
+
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

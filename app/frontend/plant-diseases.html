@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Plant Diseases</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/plant-diseases.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="dashboard.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="capture.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="handbook.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="account.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="login.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="diseases-container">
+                <div class="diseases-header">
+                    <button onclick="window.location.href='handbook.html'" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                        Go Back
+                    </button>
+                    <div class="plant-title">
+                        <h1 id="plantName">Plant Name</h1>
+                        <p id="plantDescription">Plant description and details...</p>
+                    </div>
+                </div>
+
+                <div class="diseases-grid">
+                    <!-- Disease Cards (will be dynamically populated) : Noel  -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Disease Details Modal -->
+    <div class="modal" id="diseaseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalDiseaseName">Disease Name</h2>
+                <button class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="disease-info-grid">
+                    <div class="disease-image">
+                        <img id="modalDiseaseImage" src="" alt="Disease Image">
+                    </div>
+                    <div class="disease-details">
+                        <div class="info-section">
+                            <h3><i class="fas fa-info-circle"></i> Overview</h3>
+                            <p id="modalOverview">Loading...</p>
+                        </div>
+                        <div class="info-section">
+                            <h3><i class="fas fa-virus"></i> Cause & Severity</h3>
+                            <div class="severity-info">
+                                <p id="modalCause">Loading...</p>
+                                <p id="modalSeverity" class="severity-level">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="disease-sections">
+                    <div class="info-section">
+                        <h3><i class="fas fa-search"></i> Symptoms</h3>
+                        <ul id="modalSymptoms">
+                            <li>Loading symptoms...</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3><i class="fas fa-shield-alt"></i> Prevention</h3>
+                        <ul id="modalPrevention">
+                            <li>Loading prevention methods...</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3><i class="fas fa-first-aid"></i> Treatment</h3>
+                        <ul id="modalTreatment">
+                            <li>Loading treatment methods...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script>
+        // Get plant name from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const plantParam = urlParams.get('plant');
+
+        // Sample disease data (replace with actual data)
+        const diseases = {
+            strawberry: [
+                {
+                    name: "Gray Mold",
+                    image: "assets/diseases/gray-mold.jpg",
+                    overview: "Common fungal disease affecting strawberry fruits and flowers",
+                    cause: "Fungal (Botrytis cinerea)",
+                    severity: "Moderate to severe in humid conditions",
+                    symptoms: [
+                        "Brown, soft spots on fruits",
+                        "Gray, fuzzy mold growth",
+                        "Wilting flowers",
+                        "Fruit rot"
+                    ],
+                    prevention: [
+                        "Improve air circulation",
+                        "Avoid overhead irrigation",
+                        "Remove infected plant material",
+                        "Maintain proper plant spacing"
+                    ],
+                    treatment: [
+                        "Apply fungicides during flowering",
+                        "Remove infected fruits and plants",
+                        "Reduce humidity levels",
+                        "Use protective covers during rain"
+                    ]
+                }
+            ]
+        };
+
+        // Update page content based on plant
+        if (plantParam) {
+            const plantName = plantParam.charAt(0).toUpperCase() + plantParam.slice(1);
+            document.getElementById('plantName').textContent = plantName;
+            document.getElementById('plantDescription').textContent = `Common diseases affecting ${plantName} plants`;
+
+            // Create disease cards
+            const diseasesGrid = document.querySelector('.diseases-grid');
+            const plantDiseases = diseases[plantParam] || [];
+
+            if (plantDiseases.length > 0) {
+                plantDiseases.forEach(disease => {
+                    const card = document.createElement('div');
+                    card.className = 'disease-card';
+                    card.innerHTML = `
+                        <div class="disease-image">
+                            <img src="${disease.image}" alt="${disease.name}">
+                        </div>
+                        <div class="disease-info">
+                            <h3>${disease.name}</h3>
+                            <p>${disease.overview}</p>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showDiseaseDetails(disease));
+                    diseasesGrid.appendChild(card);
+                });
+            } else {
+                // placeholder cards with design
+                for (let i = 0; i < 6; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'disease-card';
+                    card.innerHTML = `
+                        <div class="disease-image placeholder">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="disease-info">
+                            <h3>Sample Disease ${i + 1}</h3>
+                            <p>Click to view disease details</p>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showDiseaseDetails({
+                        name: `Sample Disease ${i + 1}`,
+                        image: 'assets/diseases/placeholder.jpg',
+                        overview: 'This is a sample disease description that showcases how the disease information would be displayed in the application.',
+                        cause: 'Sample pathogen or environmental condition',
+                        severity: 'Moderate',
+                        symptoms: [
+                            'Visible signs on leaves or stems',
+                            'Changes in plant growth or appearance',
+                            'Specific damage patterns',
+                            'Plant health indicators'
+                        ],
+                        prevention: [
+                            'Regular plant monitoring',
+                            'Proper cultivation practices',
+                            'Environmental control measures',
+                            'Preventive treatments'
+                        ],
+                        treatment: [
+                            'Immediate action steps',
+                            'Treatment applications',
+                            'Plant care procedures',
+                            'Recovery monitoring'
+                        ]
+                    }));
+                    diseasesGrid.appendChild(card);
+                }
+            }
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('diseaseModal');
+        const closeButton = modal.querySelector('.close-button');
+
+        function showDiseaseDetails(disease) {
+            // Update modal content
+            document.getElementById('modalDiseaseName').textContent = disease.name;
+            document.getElementById('modalDiseaseImage').src = disease.image;
+            document.getElementById('modalOverview').textContent = disease.overview;
+            document.getElementById('modalCause').textContent = `Cause: ${disease.cause}`;
+            document.getElementById('modalSeverity').textContent = `Severity: ${disease.severity}`;
+            
+            // Update lists with animations
+            const updateList = (elementId, items) => {
+                const ul = document.getElementById(elementId);
+                ul.innerHTML = items.map((item, index) => `
+                    <li style="animation: fadeIn 0.3s ease-out forwards ${index * 0.1}s">
+                        ${item}
+                    </li>
+                `).join('');
+            };
+
+            updateList('modalSymptoms', disease.symptoms);
+            updateList('modalPrevention', disease.prevention);
+            updateList('modalTreatment', disease.treatment);
+
+            // Show modal with animation
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html> 

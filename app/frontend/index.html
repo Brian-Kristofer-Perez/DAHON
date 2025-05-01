@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAHON - Disease Assessment and Health Optimization for Nature</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/logo/green-logo.png" alt="DAHON Logo">
+                        <span>DAHON</span>
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="#about">About us</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-light">Log In</a>
+                    <a href="signup.html" class="btn btn-outline">Sign up</a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="overlay"></div>
+            <div class="animated-leaves">
+                <div class="leaf leaf-1"></div>
+                <div class="leaf leaf-2"></div>
+                <div class="leaf leaf-3"></div>
+                <div class="leaf leaf-4"></div>
+                <div class="leaf leaf-5"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-logo">
+                        <img src="assets/logo/white-logo.png" alt="DAHON Icon" class="hero-icon">
+                        <h1 class="hero-title">DAHON</h1>
+                    </div>
+                    <div class="hero-tagline">
+                        <h2 class="hero-subtitle">Disease Assessment and Health Optimization for Nature</h2>
+                    </div>
+                    <div class="hero-description">
+                        <p>Snap a leaf pic with DAHON and instantly uncover plant diseases using cutting-edge AI! Get quick diagnoses, expert treatment tips, and save your crops with ease. Protect your garden today—try DAHON now!</p>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="signup.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                        <a href="login.html" class="btn btn-secondary">Learn More</a>
+                    </div>
+                    <div class="hero-badge">
+                        <div class="badge-content">
+                            <span class="badge-number">14</span>
+                            <span class="badge-text">Plants</span>
+                        </div>
+                        <p class="badge-description">Diagnose diseases for 14 plants with DAHON!</p>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image">
+                        <img src="assets/bg/plant.png" alt="Plant in pot" class="main-image">
+                        <div class="floating-badge ai-badge">
+                            <i class="fas fa-brain"></i>
+                            <span class="badge-text">AI Powered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- scroll indicator -->
+            <div class="subtle-scroll">
+                <a href="#categories">
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="categories">
+        <div class="categories-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="container">
+            <h2 class="section-title">Plant Categories</h2>
+            <p class="section-subtitle">Explore our comprehensive database of plant diseases organized by category</p>
+            
+            
+            
+            <div class="categories-grid">
+
+    <!-- Fruits Category -->
+    <div class="category-card" data-category="fruits">
+        <div class="card-inner">
+            <div class="card-front">
+                
+                <div class="category-content">
+                    <h3>Fruits</h3>
+                    <p>Explore common diseases affecting fruit plants and trees</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <span class="stat-number">24</span>
+                            <span class="stat-label">Diseases</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">6</span>
+                            <span class="stat-label">Plants</span>
+                        </div>
+                    </div>
+                    <div class="category-tag">
+                        <img src="images/flower-icon.svg" alt="Flower Icon">
+                        <span>Rosaceae</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="card-link" aria-label="Explore Fruits category"></a>
+    </div>
+    
+    <!-- Vegetables Category -->
+    <div class="category-card" data-category="vegetables">
+        <div class="card-inner">
+            <div class="card-front">
+                
+                <div class="category-content">
+                    <h3>Vegetables</h3>
+                    <p>Identify diseases affecting common vegetable crops</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Diseases</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Plants</span>
+                        </div>
+                    </div>
+                    <div class="category-tag">
+                        <img src="images/flower-icon.svg" alt="Flower Icon">
+                        <span>Solanaceae</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="card-link" aria-label="Explore Vegetables category"></a>
+    </div>
+    
+    <!-- Crops Category -->
+    <div class="category-card" data-category="crops">
+        <div class="card-inner">
+            <div class="card-front">
+                
+                <div class="category-content">
+                    <h3>Crops</h3>
+                    <p>Diagnose diseases in major agricultural crops</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <span class="stat-number">15</span>
+                            <span class="stat-label">Diseases</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Plants</span>
+                        </div>
+                    </div>
+                    <div class="category-tag">
+                        <img src="images/flower-icon.svg" alt="Flower Icon">
+                        <span>Poaceae</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="card-link" aria-label="Explore Crops category"></a>
+    </div>
+    
+    <!-- Vines Category -->
+    <div class="category-card" data-category="vines">
+        <div class="card-inner">
+            <div class="card-front">
+                
+                <div class="category-content">
+                    <h3>Vines</h3>
+                    <p>Learn about diseases affecting climbing plants</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Diseases</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Plants</span>
+                        </div>
+                    </div>
+                    <div class="category-tag">
+                        <img src="images/flower-icon.svg" alt="Flower Icon">
+                        <span>Vitaceae</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="card-link" aria-label="Explore Vines category"></a>
+    </div>
+</div>
+            
+            <div class="categories-footer">
+                <a href="login.html" class="btn btn-primary view-all-btn">
+                    <span>View All Plant Diseases</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plants Selection Section -->
+    <section id="plants" class="plants-selection">
+        <div class="container">
+            <h2 class="section-title">Selection of Plants</h2>
+            <div class="plants-grid">
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/strawberry.jpg" alt="Strawberry">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Strawberry</h3>
+                        <p>Sweet red fruit</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/tomato.jpg" alt="Tomato">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Tomato</h3>
+                        <p>Versatile veggie</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/grapes.jpg" alt="Grapes">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Grapes</h3>
+                        <p>Vines for wine</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/raspberry.jpg" alt="Raspberry">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Raspberry</h3>
+                        <p>Juicy berries on bushes</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/peach.jpg" alt="Peach">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Peach</h3>
+                        <p>Juicy summer fruit</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/soybean.jpg" alt="Soy Beans">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Soy Beans</h3>
+                        <p>Key food/oil crop</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/orange.jpg" alt="Orange">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Orange</h3>
+                        <p>Citrus fruit</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/cherry.jpg" alt="Cherry">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Cherry</h3>
+                        <p>Sweet/sour fruit</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/blueberry.jpg" alt="Blueberry">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Blueberry</h3>
+                        <p>Antioxidant-rich berries</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/apple.jpg" alt="Apple">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Apple</h3>
+                        <p>Classic fruit</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/corn.jpg" alt="Corn">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Corn</h3>
+                        <p>Staple grain</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/bellpepper.jpg" alt="Bell Pepper">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Bell Pepper</h3>
+                        <p>Colorful veggie</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/potato.jpg" alt="Potato">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Potato</h3>
+                        <p>Hearty crop</p>
+                    </div>
+                </div>
+                <div class="plant-card">
+                    <div class="plant-image">
+                        <img src="assets/plant/squash.jpg" alt="Squash">
+                    </div>
+                    <div class="plant-info">
+                        <h3>Squash</h3>
+                        <p>Versatile veggie</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-us">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            
+            <div class="team-intro">
+                <div class="intro-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3>Meet Our Team</h3>
+                <p>We're Group 3, a team of passionate innovators from ES 101: Environmental Science, guided by Dr. Aurelia Vivas. Combining our expertise in technology and plant science, we developed DAHON to identify diseases in 14 common plants including grapes, tomatoes, and apples. Our mission is to empower both gardeners and farmers with accessible technology to maintain healthier plants and sustainable agricultural practices.</p>
+            
+            </div>
+            
+            <div class="team-container">
+                <div class="team-row">
+                    <div class="team-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="team-image">
+                                    <img src="assets/team/joel-img.jpg" alt="Joel Lazernie A. Aguzar">
+                                </div>
+                                <div class="team-info">
+                                    <h3>Joel Lazernie A. Aguzar</h3>
+                                    <p>Front End Engineer</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <h3>Joel Lazernie A. Aguzar</h3>
+                                    <p>Front End Engineer</p>
+                                    <div class="member-bio">
+                                        <p>Passionate about creating intuitive user interfaces and seamless user experiences that make technology accessible to everyone.</p>
+                                    </div>
+                                    <div class="social-links">
+                                        <a href="https://www.facebook.com/aguzarjoel" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="https://github.com/joelaguzar" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="https://www.linkedin.com/in/joel-lazernie-a-aguzar-690080310 " aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="team-image">
+                                    <img src="assets/team/justin-img.jpg" alt="Justin Antenor">
+                                </div>
+                                <div class="team-info">
+                                    <h3>Justin Antenor</h3>
+                                    <p>Researcher and Annotator</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <h3>Justin Antenor</h3>
+                                    <p>Researcher and Annotator</p>
+                                    <div class="member-bio">
+                                        <p>Dedicated to gathering and analyzing data to improve plant disease identification accuracy and provide actionable recommendations.</p>
+                                    </div>
+                                    <div class="social-links">
+                                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="team-image">
+                                    <img src="assets/team/klaine-img.jpg" alt="John Klaine Mercado">
+                                </div>
+                                <div class="team-info">
+                                    <h3>John Klaine Mercado</h3>
+                                    <p>Researcher and Annotator</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <h3>John Klaine Mercado</h3>
+                                    <p>Researcher and Annotator</p>
+                                    <div class="member-bio">
+                                        <p>Expert in plant pathology and disease classification systems with a strong background in agricultural sciences.</p>
+                                    </div>
+                                    <div class="social-links">
+                                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row centered">
+                    <div class="team-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="team-image">
+                                    <img src="assets/team/brian-img.png" alt="Brian Kristofer G. Perez">
+                                </div>
+                                <div class="team-info">
+                                    <h3>Brian Kristofer G. Perez</h3>
+                                    <p>Backend Engineer</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <h3>Brian Kristofer G. Perez</h3>
+                                    <p>Backend Engineer</p>
+                                    <div class="member-bio">
+                                        <p>Skilled in developing robust backend systems, AI model integration, and creating efficient data processing pipelines.</p>
+                                    </div>
+                                    <div class="social-links">
+                                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="team-image">
+                                    <img src="assets/team/noel-img.png" alt="Noel Zyrence Saludo">
+                                </div>
+                                <div class="team-info">
+                                    <h3>Noel Zyrence Saludo</h3>
+                                    <p>Backend Engineer</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <h3>Noel Zyrence Saludo</h3>
+                                    <p>Backend Engineer</p>
+                                    <div class="member-bio">
+                                        <p>Focused on database architecture, machine learning model deployment, and optimizing system performance for real-time predictions.</p>
+                                    </div>
+                                    <div class="social-links">
+                                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-mission-tech">
+                <div class="mission-section">
+                    <div class="section-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>DAHON aims to democratize access to plant disease identification technology, making it accessible to everyone from home gardeners to commercial farmers. By providing accurate diagnoses and treatment recommendations, we strive to reduce crop losses, minimize unnecessary pesticide use, and promote sustainable agricultural practices.</p>
+                </div>
+                <div class="tech-section">
+                    <div class="section-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>Our Technology</h3>
+                    <p>DAHON utilizes a fine-tuned RESNET-9 convolutional neural network, trained on thousands of plant disease images. Our model can identify diseases with high accuracy across 14 plant species, providing instant analysis and personalized treatment recommendations to help maintain plant health and improve yields.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-question-content">
+                            <h3>What will be the benefits of DAHON?</h3>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Through precise identification of plant diseases, DAHON assists gardeners, farmers, and students in learning more about the plants they care for. The app provides accurate diagnoses, treatment recommendations, and preventive measures, helping users maintain healthier plants and improve crop yields while reducing unnecessary pesticide use.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-question-content">
+                            <h3>How did you train your model, and why did you choose this model?</h3>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Due to time constraints and limited compute resources, our team leveraged and fine-tuned an existing pre-trained RESNET-9 model. This approach allowed us to achieve high accuracy without requiring extensive computational resources. Additionally, we conducted thorough research on plants and diseases to provide accurate information and actionable recommendations for users.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-question-content">
+                            <h3>Why does DAHON only cover 14 plant species?</h3>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Due to the nature of machine learning and limitations in compute resources and comprehensive datasets, we focused on 14 common plant species for our initial release. DAHON should be viewed as a functional prototype and proof of concept that future research can build upon. We plan to expand our coverage to include more plant species, disease classifications, and comprehensive information in future updates.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-question-content">
+                            <h3>What makes DAHON different from similar plant disease identification tools?</h3>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While similar computer vision solutions exist, DAHON differentiates itself by using the RESNET-9 model architecture specifically optimized for plant disease identification. Our approach combines technical innovation with extensive agricultural research to provide not just identification but also detailed treatment recommendations and preventive measures. We've also designed DAHON with a focus on accessibility and ease of use for both home gardeners and commercial farmers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-question-content">
+                            <h3>How accurate is DAHON's disease identification?</h3>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>DAHON achieves an average accuracy rate of over 90% for the 14 plant species it currently covers. The accuracy varies slightly depending on the quality of the image provided, lighting conditions, and the stage of the disease. For optimal results, we recommend taking clear, well-lit photos that focus specifically on the affected plant parts. We continuously refine our model to improve accuracy with each update.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community">
+        <div class="container">
+            <div class="community-logo">
+                <img src="assets/logo/white-logo.png" alt="DAHON Icon">
+            </div>
+            <h2>Join Our Growing Community</h2>
+            <p>Connect with fellow plant enthusiasts, share your experiences, and stay updated with the latest plant health tips, disease prevention advice, and DAHON features.</p>
+            
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+            
+            <div class="community-features">
+                <div class="community-feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Forum</h3>
+                    <p>Connect with gardeners and farmers worldwide to share knowledge, ask questions, and discuss plant health challenges.</p>
+                </div>
+                <div class="community-feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Knowledge Base</h3>
+                    <p>Access our growing library of articles, guides, and resources about plant diseases, treatments, and prevention methods.</p>
+                </div>
+                <div class="community-feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Events & Webinars</h3>
+                    <p>Participate in virtual workshops, webinars, and seasonal events focused on sustainable agriculture and plant health.</p>
+                </div>
+            </div>
+            
+            <div class="social-links-container">
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 DAHON - Disease Assessment and Health Optimization for Nature. All Rights Reserved.</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

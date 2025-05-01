@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Capture</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/capture.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Mobile sidebar overlay -->
+        <div class="mobile-sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="dashboard.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="capture.html" class="sidebar-menu-item active">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="handbook.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="account.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="login.html" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Capture Section -->
+            <section class="capture-section" id="captureSection">
+                <div class="section-header">
+                    <h1 class="section-title">Capture</h1>
+                    <p class="section-subtitle">Upload and analyze your plant images</p>
+                </div>
+
+                <div class="capture-container">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Upload Plant Image</h3>
+                            <p>Drag and drop your files here or click to browse</p>
+                            <p class="file-info">Only support .jpg, .png and .svg files</p>
+                            <input type="file" id="fileInput" accept="image/*" hidden>
+                            <button class="btn btn-primary" id="browseButton">
+                                Browse files
+                            </button>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview" style="display: none;">
+                            <img id="previewImage" src="" alt="Preview">
+                            <div class="preview-actions">
+                                <button class="btn btn-outline btn-sm" id="removeImage">
+                                    <i class="fas fa-trash"></i>
+                                    Remove
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="analyzeButton">
+                                    <i class="fas fa-search"></i>
+                                    Analyze
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Result Section -->
+            <section class="result-section" id="resultSection" style="display: none;">
+                <!-- This section will be populated with plant-details.html content after analysis (backend integration) -->
+            </section>
+
+            <!-- Loading State -->
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <h3>Analyzing your plant...</h3>
+                    <p>This may take a few moments</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/capture.js"></script>
+</body>
+</html> 
