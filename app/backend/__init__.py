@@ -1,5 +1,7 @@
 from typing import Union
 from fastapi import FastAPI
+from fastapi import logger
+from fastapi import Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import os
@@ -24,4 +26,16 @@ async def root() -> FileResponse:
 async def login() -> FileResponse:
     # Construct the path to the login.html file in the frontend subdirectory
     frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "login.html")
+    return FileResponse(frontend_path)
+
+@app.get("/register")
+async def register() -> FileResponse:
+    # Construct the path to the register.html file in the frontend subdirectory
+    frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "signup.html")
+    return FileResponse(frontend_path)
+
+@app.get("/dashboard")
+async def dashboard() -> FileResponse:
+    # Construct the path to the dashboard.html file in the frontend subdirectory
+    frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "dashboard.html")
     return FileResponse(frontend_path)

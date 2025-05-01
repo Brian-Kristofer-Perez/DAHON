@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Redirect after delay
           setTimeout(() => {
-            window.location.href = "dashboard.html"
+            window.location.href = "/dashboard"
           }, 2000)
         }, 1500)
       }
@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Redirect after delay
           setTimeout(() => {
-            window.location.href = "dashboard.html"
+            window.location.href = "/dashboard"
           }, 2000)
         }, 1500)
       }
