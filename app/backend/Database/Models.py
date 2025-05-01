@@ -1224,3 +1224,28 @@ if __name__ == '__main__':
         SpeciesAffected(species="No diseases detected")
     ]
 
+    # Create Disease object for Unknown (Cause/Severity Unidentified)
+    unknown = Disease(
+        name="Plant unidentified",
+        cause="Cause undetermined",
+        severity="Severity undetermined",
+        symptoms=[
+            Symptom(symptom="Symptoms present but not fully identified")
+        ],
+        treatment=[
+            Treatment(treatment="Treatment pending diagnosis")
+        ],
+        prevention=[
+            Prevention(prevention="Prevention strategies to be determined based on diagnosis")
+        ]
+    )
+
+    unknown.species_affected = [
+        SpeciesAffected(species="Uncertain; further investigation needed")
+    ]
+
+    with DB.SessionLocal as session:
+        session.add(unknown)
+        session.commit()
+
+
