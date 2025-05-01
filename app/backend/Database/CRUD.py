@@ -1,5 +1,6 @@
 import io, datetime, Models, DB, sqlalchemy
 from sqlalchemy import Select
+from sqlalchemy.orm import selectinload
 
 
 engine = DB.engine
@@ -36,7 +37,10 @@ class Database:
     # all scans are ordered by date, ascending I believe
     def query_scans(self, userID: int) -> list[Models.Scan]:
         with Session() as session:
-            statement = Select(Models.Scan).where(Models.Scan.userID == userID).order_by(Models.Scan.date)
+            statement = Select(Models.Scan).options(
+                selectinload(Models.Scan.predicted_disease),
+                        selectinload(Models.Scan.predicted_plant)
+                        ).where(Models.Scan.userID == userID).order_by(Models.Scan.date)
             output = session.scalars(statement)
             scans = []
             for scan in output:
@@ -46,15 +50,20 @@ class Database:
 
     def query_plant(self, plant: str) -> Models.Plant:
         with Session() as session:
-            statement = Select(Models.Plant).where(Models.Plant.common_name == plant)
+            statement = Select(Models.Plant).options(selectinload(Models.Plant.growth_conditions)).where(Models.Plant.common_name == plant)
             output = session.scalars(statement).first()
 
         return output
 
 
-    def query_disease(self, disease: str) -> Models.Plant:
+    def query_disease(self, disease: str) -> Models.Disease:
         with Session() as session:
-            statement = Select(Models.Disease).where(Models.Disease.name == disease)
+            statement = Select(Models.Disease).options(
+                selectinload(Models.Disease.species_affected),
+                        selectinload(Models.Disease.treatment),
+                        selectinload(Models.Disease.prevention),
+                        selectinload(Models.Disease.symptoms)
+                ).where(Models.Disease.name == disease)
             output = session.scalars(statement).first()
 
         return output
@@ -80,7 +89,6 @@ class Database:
                                plantID = plant.id,
                                diseaseID = disease.id,
                                date = date)
-
             session.add(scan)
             session.commit()
 
