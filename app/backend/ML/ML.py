@@ -7,8 +7,9 @@ import json
 class MLModel:
     def __init__(self):
 
-        model_code = "gemini-2.5-pro-exp-03-25"
-        self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_code}:generateContent"
+        model_code0 = "gemini-2.5-pro-exp-03-25"
+        model_code1 = "gemini-2.5-flash-preview-04-17"
+        self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_code1}:generateContent"
 
         self.key = "AIzaSyCgwEW6H43J50HR4IINBCtUVHRNFKDidIA"
         self.header = {"Content-Type": "application/json"}
@@ -42,7 +43,13 @@ class MLModel:
                                     - Tomato: Tomato Yellow Leaf Curl Virus
                                     - Tomato: Tomato Mosaic Virus   
 
-                                    Return your classification as a JSON object with the keys 'plant' and 'disease'. If no disease from the list is detected for the identified plant, the 'disease' value should be 'healthy'. If you cannot confidently identify the plant from the provided list, please indicate 'unknown' for the 'plant' and 'unknown' for the 'disease'. Be precise and only use the terms exactly as they appear in the list above."
+                                    Return your classification as a JSON object with the keys 'plant' and 'disease'. 
+                                    Bear in mind that when putting results in the disease key, follow the format of plant name: disease name. If no disease from the list is detected for the identified plant, the 'disease' value should be 'healthy'. 
+                                    If you cannot confidently identify the plant from the provided list, please indicate 'unknown' for the 'plant' and 'unknown' for the 'disease'. Be precise and only use the terms exactly as they appear in the list above."
+                                    
+                                    For example:
+                                    {"plant": "Tomato", "disease": "Tomato: Tomato Yellow Leaf Curl Virus"}
+                                    {"plant": "Squash". "disease": "Powdery Mildew"}
                                     """
 
         self.plant_response_schema = {"type": "string", "description": "The identified plant name"}
