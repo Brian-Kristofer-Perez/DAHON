@@ -82,15 +82,16 @@ class Database:
     # when passing image, use io.BytesIO (standard library) object
     # likewise with date, it uses datetime.datetime (standard library)
     # for plants and disease, use database models, not strings.
-    def add_scan(self, userID: int, image: io.BytesIO, date: datetime.datetime, plant: Models.Plant, disease: Models.Disease):
+    def add_scan(self, userID: int, image: io.BytesIO, date: datetime.datetime, plant: Models.Plant, disease: Models.Disease, filetype: str):
         with Session() as session:
             scan = Models.Scan(userID = userID,
-                               image = image,
+                               image = image.getvalue(),
                                predicted_plant = plant,
                                predicted_disease = disease,
                                plantID = plant.id,
                                diseaseID = disease.id,
-                               date = date)
+                               date = date,
+                               mime_type = f"image/{filetype.lower()}")
             session.add(scan)
             session.commit()
 

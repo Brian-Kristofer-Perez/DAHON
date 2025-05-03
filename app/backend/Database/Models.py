@@ -20,6 +20,7 @@ class Scan(Base):
     id = Column('id', Integer, primary_key=True)
     userID = Column('userID', ForeignKey('user.id'))
     image = Column('image', MEDIUMBLOB)
+    mime_type = Column('mime_type', String(75))
     date = Column('datetime', sqlalchemy.DATETIME)
     plantID = Column('predicted_plant', ForeignKey('plant.id'))
     diseaseID = Column('predicted_disease', ForeignKey('disease.id'))
@@ -27,11 +28,14 @@ class Scan(Base):
     predicted_disease = Relationship('Disease')
 
     def to_dict(self):
+
+        b64 = base64.b64encode(self.image).decode('utf-8')
         output = {
-                'image': self.image,
+                'image': b64,
                 'date': self.date.isoformat(),
                 'predicted_plant': self.predicted_plant.to_dict(),
                 'predicted_disease': self.predicted_disease.to_dict(),
+                'mime_type': self.mime_type
                  }
 
         return output
@@ -123,7 +127,6 @@ class SampleImage(Base):
             'image': b64_image,  # The Base64 encoded image data as a string
             'mime_type': self.mime_type  # The MIME type (e.g., 'image/jpeg', 'image/png')
         }
-
 
 
 class SpeciesAffected(Base):
