@@ -63,7 +63,8 @@ class Database:
                 selectinload(Models.Disease.species_affected),
                         selectinload(Models.Disease.treatment),
                         selectinload(Models.Disease.prevention),
-                        selectinload(Models.Disease.symptoms)
+                        selectinload(Models.Disease.symptoms),
+                        selectinload(Models.Disease.sample_images)
                 ).where(Models.Disease.name == disease)
             output = session.scalars(statement).first()
 
