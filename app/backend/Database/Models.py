@@ -103,7 +103,7 @@ class Disease(Base):
             'treatment': [t.treatment for t in self.treatment],
             'prevention': [p.prevention for p in self.prevention],
             'severity': self.severity,
-            'sample_images': [s.to_dict for s in self.sample_images]
+            'sample_images': [s.to_dict() for s in self.sample_images]
         }
         return output
 
