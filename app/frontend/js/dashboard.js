@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const newScanBtn = document.getElementById("newScanBtn");
   if (newScanBtn) {
     newScanBtn.addEventListener("click", () => {
-      window.location.href = "capture.html";
+      window.location.href = "/capture";
     });
   }
 
