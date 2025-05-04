@@ -16,6 +16,19 @@ class User(Base):
     last_name = Column('last_name', String(50))
     password = Column('password', String(50))
     contact_number = Column('contact_number', String(20))
+    profile_picture = Column('profile_picture', MEDIUMBLOB)
+
+    def to_dict(self):
+        encoded_pfp = base64.b64encode(self.profile_picture).decode('utf-8')
+        return {
+            'id': self.id,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'password': self.password,
+            'contact_number': self.contact_number,
+            'profile_picture': encoded_pfp
+        }
 
 
 class Scan(Base):

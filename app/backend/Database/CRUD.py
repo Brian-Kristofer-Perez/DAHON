@@ -70,14 +70,15 @@ class Database:
             session.commit()
 
 
-    def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = ''):
+    def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = '', new_profile_picture: bytes = None):
         with Session() as session:
             statement = Update(Models.User).where(Models.User.id == user_id).values(
                 email= new_email,
                 passworld= new_password,
                 first_name= new_first_name,
                 last_name= new_last_name,
-                contact_number = new_contact_number
+                contact_number = new_contact_number,
+                profile_picture = new_profile_picture
             )
 
             session.execute(statement)
