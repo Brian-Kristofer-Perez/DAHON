@@ -85,62 +85,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle analyze button
     analyzeButton.addEventListener('click', () => {
+        // Check if image is selected
+        if (!previewImage.src) {
+            alert('Please select an image to analyze');
+            return;
+        }
+        
         // Show loading overlay
         loadingOverlay.style.display = 'flex';
-
-        // This is to create mock analysis result (need the backend her guys)
-        const mockResult = {
-            disease: "Early Blight",
-            scientificName: "Alternaria solani",
-            confidence: 95.8,
-            timestamp: new Date().toISOString(),
-            imageId: "capture_" + Date.now(),
-            affectedPlants: {
-                primary: ["Tomato", "Potato"],
-                secondary: ["Eggplant", "Other solanaceous crops"]
-            },
-            cause: "Fungal (Alternaria solani)",
-            severity: "Moderate to severe, especially in warm, wet climates",
-            symptoms: [
-                "Begins on older, lower leaves as small dark spots",
-                "Spots expand into concentric rings, forming a characteristic 'bullseye' pattern",
-                "Surrounding tissue often turns yellow and the leaf dies",
-                "In severe cases, progresses upward causing defoliation",
-                "Dark, sunken lesions may develop on stems and fruits"
-            ],
-            prevention: [
-                "Apply fungicides like chlorothalonil, mancozeb, or copper-based products",
-                "Begin treatment early, especially in humid or wet weather",
-                "Remove and destroy infected plant debris",
-                "Improve air circulation by pruning and staking"
-            ],
-            treatment: [
-                "Apply fungicides like chlorothalonil, mancozeb, or copper-based products",
-                "Begin treatments early, especially in humid or wet weather",
-                "Remove and destroy infected plant debris",
-                "Improve air circulation by pruning and staking"
-            ]
-        };
-
-        // Store the mock result and uploaded image
-        try {
-            localStorage.setItem('analysisResult', JSON.stringify(mockResult));
+        
+        // Get file from input
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('No file selected');
+            loadingOverlay.style.display = 'none';
+            return;
+        }
+        
+        // Create form data to send to API
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Send to backend API
+        fetch('/api/analyze-plant', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server responded with status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => {
+            // Store the result and uploaded image
+            localStorage.setItem('analysisResult', JSON.stringify(result));
             localStorage.setItem('uploadedImage', previewImage.src);
             
             // Debug log to verify data is stored
-            console.log('Data stored in localStorage:', {
-                analysisResult: mockResult,
+            console.log('Data received from API and stored:', {
+                analysisResult: result,
                 imageStored: !!previewImage.src
             });
-
-            // Simulation of API delay
-            setTimeout(() => {
-                window.location.href = 'plant-details.html';
-            }, 800);
-        } catch (error) {
-            console.error('Error storing data:', error);
-            alert('An error occurred while processing the image. Please try again.');
+            
+            // Navigate to results page
+            window.location.href = 'plant-details.html';
+        })
+        .catch(error => {
+            console.error('Error analyzing image:', error);
+            alert('An error occurred while analyzing the image. Please try again.');
             loadingOverlay.style.display = 'none';
-        }
+        });
     });
 }); 
