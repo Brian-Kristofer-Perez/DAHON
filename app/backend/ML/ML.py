@@ -11,7 +11,7 @@ class MLModel:
         model_code1 = "gemini-2.5-flash-preview-04-17"
         self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_code1}:generateContent"
 
-        self.key = "secret"
+        self.key = "AIzaSyCgwEW6H43J50HR4IINBCtUVHRNFKDidIA"
         self.header = {"Content-Type": "application/json"}
         self.instruction_set = """Analyze the provided image of a plant leaf and identify both the plant species and any disease present. You must classify the plant and disease based *only* on the following possible pairings. If the leaf appears healthy and shows no signs of disease from this list, classify it as 'healthy' for that plant.\n
 

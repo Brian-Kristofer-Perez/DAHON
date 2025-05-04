@@ -1,9 +1,11 @@
+from io import BytesIO
 from typing import Annotated
 from fastapi import FastAPI, Form, Depends, HTTPException, File, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from app.backend.Database import CRUD
+from app.backend.ML import ML
 import shutil
 import uuid
 from datetime import datetime
@@ -22,7 +24,7 @@ app.mount("/css", StaticFiles(directory=css_path), name="css")
 app.mount("/js", StaticFiles(directory=js_path), name="js")
 
 db = CRUD.Database()
-db = CRUD.Database()
+mlModel = ML.MLModel()
 
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
@@ -68,6 +70,11 @@ async def plant_disease(plant: str) -> FileResponse:
     plant_disease_path = os.path.join(frontend_path, f"plant-diseases.html")
     return FileResponse(plant_disease_path)
 
+@app.get("/plant-details")
+async def plant_details(plant: str) -> FileResponse:
+    plant_details_path = os.path.join(frontend_path, f"plant-details.html")
+    return FileResponse(plant_details_path)
+
 @app.post("/register")
 async def register_user(
     firstName: Annotated[str, Form()],
@@ -86,52 +93,33 @@ async def login_user(
 
 @app.post("/api/analyze-plant")
 async def analyze_plant(file: UploadFile = File(...)):
-    # Generate unique filename
-    file_extension = file.filename.split(".")[-1]
-    unique_filename = f"{uuid.uuid4()}.{file_extension}"
-    file_path = os.path.join(upload_path, unique_filename)
-    
-    # Save the file
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    
-    # Here you would call your plant analysis model
-    # For now, return mock data similar to what you had in JavaScript
-    
-    analysis_result = {
-        "disease": "Early Blight",
-        "scientificName": "Alternaria solani",
-        "confidence": 95.8,
-        "timestamp": datetime.now().isoformat(),
-        "imageId": f"upload_{uuid.uuid4()}",
-        "affectedPlants": {
-            "primary": ["Tomato", "Potato"],
-            "secondary": ["Eggplant", "Other solanaceous crops"]
-        },
-        "cause": "Fungal (Alternaria solani)",
-        "severity": "Moderate to severe, especially in warm, wet climates",
-        "symptoms": [
-            "Begins on older, lower leaves as small dark spots",
-            "Spots expand into concentric rings, forming a characteristic 'bullseye' pattern",
-            "Surrounding tissue often turns yellow and the leaf dies",
-            "In severe cases, progresses upward causing defoliation",
-            "Dark, sunken lesions may develop on stems and fruits"
-        ],
-        "prevention": [
-            "Apply fungicides like chlorothalonil, mancozeb, or copper-based products",
-            "Begin treatment early, especially in humid or wet weather",
-            "Remove and destroy infected plant debris",
-            "Improve air circulation by pruning and staking"
-        ],
-        "treatment": [
-            "Apply fungicides like chlorothalonil, mancozeb, or copper-based products",
-            "Begin treatments early, especially in humid or wet weather",
-            "Remove and destroy infected plant debris",
-            "Improve air circulation by pruning and staking"
-        ]
-    }
-    
-    # Log the analysis
-    print(f"Analyzed plant image: {file.filename}, saved as {unique_filename}")
-    
-    return analysis_result
+    try:
+        # Generate unique filename
+        file_extension = file.filename.split(".")[-1]
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+        file_path = os.path.join(upload_path, unique_filename)
+        
+        # First, save the uploaded file
+        contents = await file.read()
+        with open(file_path, "wb") as f:
+            f.write(contents)
+        
+        # Now create BytesIO object from the contents
+        image = BytesIO(contents)
+        
+        # Reset position to start of file
+        image.seek(0)
+        
+        # Make prediction
+        plant, disease = mlModel.predict(image)
+        
+        print(f"Predicted Plant: {plant}, Predicted Disease: {disease}")
+        
+        return {
+            "plant": plant,
+            "disease": disease,
+            "image_path": f"/uploads/{unique_filename}",
+        }
+    except Exception as e:
+        print(f"Error analyzing plant: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
