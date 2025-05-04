@@ -22,6 +22,7 @@ app.mount("/css", StaticFiles(directory=css_path), name="css")
 app.mount("/js", StaticFiles(directory=js_path), name="js")
 
 db = CRUD.Database()
+db = CRUD.Database()
 
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
