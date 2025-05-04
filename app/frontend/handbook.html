@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Handbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/handbook.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="/dashboard" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="/capture" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="/handbook" class="sidebar-menu-item active">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="/account" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="/login" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="handbook-container">
+                <div class="handbook-header">
+                    <h1>Handbook</h1>
+                    <p>Discover Plant Diseases</p>
+                </div>
+
+                <div class="search-bar">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search plants...">
+                    </div>
+                </div>
+
+                <div class="plants-grid">
+                    <!-- Plant Cards -->
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=strawberry'">
+                        <div class="plant-image">
+                            <img src="assets/plant/strawberry.jpg" alt="Strawberry">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Strawberry</h3>
+                            <p>Sweet red fruit</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=tomato'">
+                        <div class="plant-image">
+                            <img src="assets/plant/tomato.jpg" alt="Tomato">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Tomato</h3>
+                            <p>Versatile veggie</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=grapes'">
+                        <div class="plant-image">
+                            <img src="assets/plant/grapes.jpg" alt="Grapes">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Grapes</h3>
+                            <p>Vines for wine</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=raspberry'">
+                        <div class="plant-image">
+                            <img src="assets/plant/raspberry.jpg" alt="Raspberry">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Raspberry</h3>
+                            <p>Juicy berries on bushes</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=peach'">
+                        <div class="plant-image">
+                            <img src="assets/plant/peach.jpg" alt="Peach">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Peach</h3>
+                            <p>Juicy summer fruit</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=soybean'">
+                        <div class="plant-image">
+                            <img src="assets/plant/soybean.jpg" alt="Soy Beans">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Soy Beans</h3>
+                            <p>Key food/oil crop</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=orange'">
+                        <div class="plant-image">
+                            <img src="assets/plant/orange.jpg" alt="Orange">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Orange</h3>
+                            <p>Citrus fruit</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=cherry'">
+                        <div class="plant-image">
+                            <img src="assets/plant/cherry.jpg" alt="Cherry">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Cherry</h3>
+                            <p>Sweet/sour fruit</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=blueberry'">
+                        <div class="plant-image">
+                            <img src="assets/plant/blueberry.jpg" alt="Blueberry">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Blueberry</h3>
+                            <p>Antioxidant-rich berries</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=apple'">
+                        <div class="plant-image">
+                            <img src="assets/plant/apple.jpg" alt="Apple">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Apple</h3>
+                            <p>Classic fruit</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=corn'">
+                        <div class="plant-image">
+                            <img src="assets/plant/corn.jpg" alt="Corn">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Corn</h3>
+                            <p>Staple grain</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=bellpepper'">
+                        <div class="plant-image">
+                            <img src="assets/plant/bellpepper.jpg" alt="Bell Pepper">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Bell Pepper</h3>
+                            <p>Colorful veggie</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=potato'">
+                        <div class="plant-image">
+                            <img src="assets/plant/potato.jpg" alt="Potato">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Potato</h3>
+                            <p>Hearty crop</p>
+                        </div>
+                    </div>
+
+                    <div class="plant-card" onclick="window.location.href='/plant-disease/?plant=squash'">
+                        <div class="plant-image">
+                            <img src="assets/plant/squash.jpg" alt="Squash">
+                        </div>
+                        <div class="plant-info">
+                            <h3>Squash</h3>
+                            <p>Versatile veggie</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script>
+        // rerouting function
+        function navigateToPlantDisease(plant) {
+            window.location.href = `/plant-disease/?plant=${plant}`;
+        }
+        // Search functionality
+        const searchInput = document.querySelector('.search-input input');
+        const plantCards = document.querySelectorAll('.plant-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            plantCards.forEach(card => {
+                const plantName = card.querySelector('h3').textContent.toLowerCase();
+                const plantDesc = card.querySelector('p').textContent.toLowerCase();
+                
+                if (plantName.includes(searchTerm) || plantDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

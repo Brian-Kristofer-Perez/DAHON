@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon - Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Mobile sidebar overlay -->
+        <div class="mobile-sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="assets/logo/green-logo.png" alt="Dahon Logo">
+                    <span class="sidebar-logo-text">DAHON</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="/dashboard" class="sidebar-menu-item active">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Dashboard</span>
+                    </a>
+                    <a href="/capture" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Capture</span>
+                    </a>
+                    <a href="/handbook" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Handbook</span>
+                    </a>
+                    <a href="/account" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Account</span>
+                    </a>
+                    <a href="/login" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-role">Welcome back 👋</div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Mobile sidebar toggle button -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Welcome back, <span id="welcomeUserName">Johnathan</span></h1>
+                    <p class="welcome-message">Your plants are looking good today! Here's your garden overview.</p>
+                </div>
+            </section>
+            
+            <!-- Dashboard Overview -->
+            <section class="dashboard-overview">
+                <div class="overview-grid">
+                    <!-- Plant Health Card -->
+                    <div class="overview-card health-card">
+                        <div class="overview-card-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">Plant Health</h3>
+                            <div class="health-meter">
+                                <div class="health-meter-bar">
+                                    <div class="health-meter-fill" style="width: 75%"></div>
+                                </div>
+                                <div class="health-meter-label">75% Healthy</div>
+                            </div>
+                            <p class="overview-card-description">Most of your plants are doing well</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity Card -->
+                    <div class="overview-card activity-card">
+                        <div class="overview-card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">Recent Activity</h3>
+                            <div class="activity-stats">
+                                <div class="activity-stat">
+                                    <span class="activity-value" id="totalScans">75</span>
+                                    <span class="activity-label">Total Scans</span>
+                                </div>
+                                <div class="activity-stat">
+                                    <span class="activity-value" id="lastScan">2</span>
+                                    <span class="activity-label">Days Ago</span>
+                                </div>
+                            </div>
+                            <p class="overview-card-description">Your garden is actively monitored</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Card -->
+                    <div class="overview-card weather-card">
+                        <div class="overview-card-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">Weather</h3>
+                            <div class="weather-info">
+                                <div class="weather-temp">24°C</div>
+                                <div class="weather-condition">Partly Cloudy</div>
+                            </div>
+                            <p class="overview-card-description">Good conditions for plant growth</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tasks Card -->
+                    <div class="overview-card tasks-card">
+                        <div class="overview-card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">Garden Tasks</h3>
+                            <div class="tasks-progress">
+                                <div class="task-item">
+                                    <span class="task-name">Water Plants</span>
+                                    <span class="task-status completed">Completed</span>
+                                </div>
+                                <div class="task-item">
+                                    <span class="task-name">Apply Treatment</span>
+                                    <span class="task-status pending">Pending</span>
+                                </div>
+                            </div>
+                            <p class="overview-card-description">1 task pending for today</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Plant Health Status -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Plant Health Status</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-sort"></i>
+                            Sort
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="plant-status-grid">
+                    <!-- Healthy Plants -->
+                    <div class="status-card healthy-card">
+                        <div class="status-header">
+                            <div class="status-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="status-title">Healthy</h3>
+                        </div>
+                        <div class="status-count" id="healthyPlants">46</div>
+                        <div class="status-trend" id="healthyPlantsChange">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>0.03%</span>
+                        </div>
+                        <p class="status-description">Plants with no detected issues</p>
+                    </div>
+                    
+                    <!-- Warning Plants -->
+                    <div class="status-card warning-card">
+                        <div class="status-header">
+                            <div class="status-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="status-title">Warning</h3>
+                        </div>
+                        <div class="status-count" id="warningPlants">15</div>
+                        <div class="status-trend positive" id="warningPlantsChange">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>15.03%</span>
+                        </div>
+                        <p class="status-description">Plants showing early signs of issues</p>
+                    </div>
+                    
+                    <!-- Critical Plants -->
+                    <div class="status-card critical-card">
+                        <div class="status-header">
+                            <div class="status-icon">
+                                <i class="fas fa-radiation"></i>
+                            </div>
+                            <h3 class="status-title">Critical</h3>
+                        </div>
+                        <div class="status-count" id="criticalPlants">5</div>
+                        <div class="status-trend positive" id="criticalPlantsChange">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>2.5%</span>
+                        </div>
+                        <p class="status-description">Plants requiring immediate attention</p>
+                    </div>
+                    
+                    <!-- Treated Plants -->
+                    <div class="status-card treated-card">
+                        <div class="status-header">
+                            <div class="status-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h3 class="status-title">Treated</h3>
+                        </div>
+                        <div class="status-count" id="treatedPlants">24</div>
+                        <div class="status-trend positive" id="treatedPlantsChange">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8.5%</span>
+                        </div>
+                        <p class="status-description">Plants under active treatment</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Recent Scans Section -->
+            <section class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Recent Scans</h2>
+                        <p class="section-subtitle">Your latest plant health checks</p>
+                    </div>
+                    <a href="#" class="btn btn-primary">View All Scans</a>
+                </div>
+                
+                <div class="recent-scans-grid" id="recentScans">
+                    <!-- Scan Card 1 -->
+                    <div class="scan-card" data-id="1" data-plant="Tomato Plant" data-disease="Healthy" data-status="healthy">
+                        <div class="scan-image">
+                            <img src="assets/plant/tomato.jpg" alt="Healthy Tomato Plant">
+                            <div class="scan-status">
+                                <span class="status-badge status-healthy">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="scan-content">
+                            <h3 class="scan-title">Tomato Plant</h3>
+                            <p class="scan-description">Healthy plant with no signs of disease</p>
+                            <div class="scan-meta">
+                                <div class="scan-date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <span>June 15, 2023</span>
+                                </div>
+                                <div class="scan-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Home Garden</span>
+                                </div>
+                            </div>
+                            <a href="plant-details.html?id=1" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Scan Card 2 -->
+                    <div class="scan-card" data-id="2" data-plant="Potato Plant" data-disease="Late Blight" data-status="unhealthy">
+                        <div class="scan-image">
+                            <img src="assets/plant/potato.jpg" alt="Potato Plant with Late Blight">
+                            <div class="scan-status">
+                                <span class="status-badge status-critical">Critical</span>
+                            </div>
+                        </div>
+                        <div class="scan-content">
+                            <h3 class="scan-title">Potato Plant</h3>
+                            <p class="scan-description">Late Blight detected - requires immediate treatment</p>
+                            <div class="scan-meta">
+                                <div class="scan-date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <span>June 14, 2023</span>
+                                </div>
+                                <div class="scan-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Home Garden</span>
+                                </div>
+                            </div>
+                            <a href="plant-details.html?id=2" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Scan Card 3 -->
+                    <div class="scan-card" data-id="3" data-plant="Tomato Plant" data-disease="Healthy" data-status="healthy">
+                        <div class="scan-image">
+                            <img src="assets/plant/tomato.jpg" alt="Healthy Tomato Plant">
+                            <div class="scan-status">
+                                <span class="status-badge status-healthy">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="scan-content">
+                            <h3 class="scan-title">Tomato Plant</h3>
+                            <p class="scan-description">Healthy plant with no signs of disease</p>
+                            <div class="scan-meta">
+                                <div class="scan-date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <span>June 13, 2023</span>
+                                </div>
+                                <div class="scan-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Backyard</span>
+                                </div>
+                            </div>
+                            <a href="plant-details.html?id=3" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Scan Card 4 -->
+                    <div class="scan-card" data-id="4" data-plant="Apple Tree" data-disease="Powdery Mildew" data-status="warning">
+                        <div class="scan-image">
+                            <img src="assets/plant/apple.jpg" alt="Apple Tree with Powdery Mildew">
+                            <div class="scan-status">
+                                <span class="status-badge status-warning">Warning</span>
+                            </div>
+                        </div>
+                        <div class="scan-content">
+                            <h3 class="scan-title">Apple Tree</h3>
+                            <p class="scan-description">Powdery Mildew detected - early stage</p>
+                            <div class="scan-meta">
+                                <div class="scan-date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <span>June 12, 2023</span>
+                                </div>
+                                <div class="scan-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Orchard</span>
+                                </div>
+                            </div>
+                            <a href="plant-details.html?id=4" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Common Diseases Section -->
+            <section class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Common Diseases</h2>
+                        <p class="section-subtitle">Most frequent plant issues in your garden</p>
+                    </div>
+                    <a href="/handbook" class="btn btn-primary">View All Diseases</a>
+                </div>
+                
+                <div class="diseases-grid">
+                    <div class="disease-card">
+                        <div class="disease-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="disease-content">
+                            <h3 class="disease-name">Early Blight</h3>
+                            <div class="disease-progress">
+                                <div class="disease-progress-bar" style="width: 80%;"></div>
+                                <span class="disease-percentage">80%</span>
+                            </div>
+                            <p class="disease-description">Common in tomatoes and potatoes</p>
+                            <button class="btn btn-outline btn-sm">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <div class="disease-card">
+                        <div class="disease-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="disease-content">
+                            <h3 class="disease-name">Late Blight</h3>
+                            <div class="disease-progress">
+                                <div class="disease-progress-bar" style="width: 65%;"></div>
+                                <span class="disease-percentage">65%</span>
+                            </div>
+                            <p class="disease-description">Severe disease affecting potatoes</p>
+                            <button class="btn btn-outline btn-sm">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <div class="disease-card">
+                        <div class="disease-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="disease-content">
+                            <h3 class="disease-name">Leaf Spot</h3>
+                            <div class="disease-progress">
+                                <div class="disease-progress-bar" style="width: 50%;"></div>
+                                <span class="disease-percentage">50%</span>
+                            </div>
+                            <p class="disease-description">Affects various plants and vegetables</p>
+                            <button class="btn btn-outline btn-sm">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <div class="disease-card">
+                        <div class="disease-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="disease-content">
+                            <h3 class="disease-name">Powdery Mildew</h3>
+                            <div class="disease-progress">
+                                <div class="disease-progress-bar" style="width: 40%;"></div>
+                                <span class="disease-percentage">40%</span>
+                            </div>
+                            <p class="disease-description">Common in dry conditions with high humidity</p>
+                            <button class="btn btn-outline btn-sm">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
