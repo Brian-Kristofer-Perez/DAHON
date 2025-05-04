@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Form, Depends, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
-# import Database.CRUD as CRUD
+import Database.CRUD as CRUD
 import os
 
 app = FastAPI()
@@ -15,7 +14,7 @@ app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
 app.mount("/css", StaticFiles(directory=css_path), name="css")
 app.mount("/js", StaticFiles(directory=js_path), name="js")
 
-# db = CRUD.Database()
+db = CRUD.Database()
 
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
@@ -72,14 +71,10 @@ async def plant_disease(plant: str) -> FileResponse:
 #     db: Session = Depends(get_db),
 # ):
 #     # Check if the email already exists
-#     existing_user = db.query(User).filter(User.email == email).first()
+#     existing_user = db.validate_email(email)
 #     if existing_user:
 #         raise HTTPException(status_code=400, detail="Email already registered")
-
+#
 #     # Insert the new user into the database
-#     new_user = User(first_name=first_name, last_name=last_name, email=email, password=password)
-#     db.add(new_user)
-#     db.commit()
-#     db.refresh(new_user)
-
+#
 #     return {"message": "User registered successfully", "user_id": new_user.id}

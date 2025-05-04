@@ -11,8 +11,11 @@ Base = DB.Base
 class User(Base):
     __tablename__ = 'user'
     id = Column('id', Integer, primary_key=True)
-    username = Column('username', String(20))
-    password = Column('password', String(20))
+    email = Column('email', String(50))
+    first_name = Column('first_name', String(50))
+    last_name = Column('last_name', String(50))
+    password = Column('password', String(50))
+    contact_number = Column('contact_number', String(20))
 
 
 class Scan(Base):

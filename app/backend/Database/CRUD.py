@@ -1,5 +1,5 @@
 import io, datetime, sqlalchemy
-from sqlalchemy import Select
+from sqlalchemy import Select, Update
 from sqlalchemy.orm import selectinload
 from . import Models
 from . import DB
@@ -9,33 +9,27 @@ Session = DB.SessionLocal
 
 class Database:
 
-    # Returns a user object. Don't worry, it has at most like 3 attributes
-    # just User.name, User.password, and User.id
-    def query_user(self, username, password = '') -> Models.User:
-
-        # if a password is provided, query a user with a matching password
-        if password:
-            with Session() as session:
-                statement = Select(Models.User).where(
-                    sqlalchemy.and_(
-                        Models.User.username == username,
-                        Models.User.password == password
-                    )
+    def query_user(self, email, password) -> Models.User:
+        with Session() as session:
+            statement = Select(Models.User).where(
+                sqlalchemy.and_(
+                    Models.User.email == email,
+                    Models.User.password == password
                 )
-                output = session.scalars(statement).first()
-
-        # otherwise just query users with a similar name (this is for error handling :)
-        else:
-            with Session() as session:
-                statement = Select(Models.User).where(Models.User.username == username)
-                output = session.scalars(statement).first()
+            )
+            output = session.scalars(statement).first()
 
         return output
 
 
+    def validate_email(self, email):
+        with Session() as session:
+            statement = Select(Models.User).where(Models.User.email == email)
+            output = session.scalars(statement).first()
+            return len(output) == 0
+
+
     # query all scans made by user, returns array of scan objects.
-    # actually... pretty much all queries return objects. See Models.py for reference (Optional!)
-    # all scans are ordered by date, ascending I believe
     def query_scans(self, userID: int) -> list[Models.Scan]:
         with Session() as session:
             statement = Select(Models.Scan).options(
@@ -43,17 +37,16 @@ class Database:
                         selectinload(Models.Scan.predicted_plant)
                         ).where(Models.Scan.userID == userID).order_by(Models.Scan.date)
             output = session.scalars(statement)
-            scans = []
-            for scan in output:
-                scans.append(scan)
-            return scans
+        scans = []
+        for scan in output:
+            scans.append(scan)
+        return scans
 
 
     def query_plant(self, plant: str) -> Models.Plant:
         with Session() as session:
             statement = Select(Models.Plant).options(selectinload(Models.Plant.growth_conditions)).where(Models.Plant.common_name == plant)
             output = session.scalars(statement).first()
-
         return output
 
 
@@ -67,20 +60,30 @@ class Database:
                         selectinload(Models.Disease.sample_images)
                 ).where(Models.Disease.name == disease)
             output = session.scalars(statement).first()
-
         return output
 
 
-    def add_user(self, username, password):
+    def add_user(self, email, password, first_name, last_name, contact_number):
         with Session() as session:
-            user = Models.User(username= username, password= password)
+            user = Models.User(email= email, password= password, first_name= first_name, last_name= last_name, contact_number= contact_number)
             session.add(user)
             session.commit()
 
 
-    # quite complex (Sorry!)
-    # when passing image, use io.BytesIO (standard library) object
-    # likewise with date, it uses datetime.datetime (standard library)
+    def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = ''):
+        with Session() as session:
+            statement = Update(Models.User).where(Models.User.id == user_id).values(
+                email= new_email,
+                passworld= new_password,
+                first_name= new_first_name,
+                last_name= new_last_name,
+                contact_number = new_contact_number
+            )
+
+            session.execute(statement)
+            session.commit()
+
+
     # for plants and disease, use database models, not strings.
     def add_scan(self, userID: int, image: io.BytesIO, date: datetime.datetime, plant: Models.Plant, disease: Models.Disease, filetype: str):
         with Session() as session:
