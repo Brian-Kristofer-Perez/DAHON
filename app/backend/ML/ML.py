@@ -1,4 +1,5 @@
 from io import BytesIO
+import os
 import requests
 from base64 import b64encode
 import json
@@ -11,7 +12,9 @@ class MLModel:
         model_code1 = "gemini-2.5-flash-preview-04-17"
         self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_code1}:generateContent"
 
-        self.key = "secret"
+        self.key = os.environ.get("ML_API_KEY")
+        if self.key is None:
+            raise ValueError("ML_API_KEY environment variable not set.")
         self.header = {"Content-Type": "application/json"}
         self.instruction_set = """Analyze the provided image of a plant leaf and identify both the plant species and any disease present. You must classify the plant and disease based *only* on the following possible pairings. If the leaf appears healthy and shows no signs of disease from this list, classify it as 'healthy' for that plant.\n
 
