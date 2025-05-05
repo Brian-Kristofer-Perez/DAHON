@@ -4,8 +4,8 @@ from fastapi import FastAPI, Form, Depends, HTTPException, File, UploadFile, Que
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from app.backend.Database import CRUD
-from app.backend.ML import ML
+from Database import CRUD
+from ML import ML
 import shutil
 from base64 import b64encode, b64decode
 import uuid
