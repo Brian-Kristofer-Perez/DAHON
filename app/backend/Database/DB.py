@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 # In future projects, let's use environment variables
 # because hardcoding this is a mortal sin
 user = "root"
-password = "12345678"
+password = ""
 port = "3306"
 database_name = "DahonDB"
 
