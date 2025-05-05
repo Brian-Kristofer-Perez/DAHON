@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.backend.Database import CRUD
 from app.backend.ML import ML
 import shutil
+from base64 import b64encode, b64decode
 import uuid
 from datetime import datetime
 import os
@@ -82,14 +83,55 @@ async def register_user(
     email: Annotated[str, Form()],
     password: Annotated[str, Form()],
 ):
-    return {"message": "User registered successfully"}
+    try:
+        # Check if the email already exists
+        existing_user = db.query_user(email, "")
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        
+        # Add the new user to the database
+        db.add_user(
+            email=email,
+            password=password,
+            first_name=firstName,
+            last_name=lastName,
+        )
+        
+        return {
+            "email": email,
+            "first_name": firstName,
+            "last_name": lastName,
+            "message": "User registered successfully"
+        }
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        print(f"Registration error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error during registration")
 
 @app.post("/login")
 async def login_user(
     email: Annotated[str, Form()],
     password: Annotated[str, Form()],
 ):
-    return {"message": "User logged in successfully"}
+    try:
+        user = db.query_user(email, password)
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Return user information (excluding password for security)
+        return {
+            "id": user.id,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "message": "User logged in successfully"
+        }
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        print(f"Login error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error during login")
 
 @app.post("/api/analyze-plant")
 async def analyze_plant(file: UploadFile = File(...)):
@@ -139,7 +181,7 @@ async def get_plant_disease(disease: str = Query(...)):
             "cause": details.cause,
             "treatment": details.treatment,
             "prevention": details.prevention,
-            "images": [image.image for image in details.sample_images],
+            "images": [images.to_dict() for images in details.sample_images],
             "severity": details.severity,
         }
     except Exception as e:
