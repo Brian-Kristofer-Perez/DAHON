@@ -1,6 +1,6 @@
 from io import BytesIO
 from typing import Annotated
-from fastapi import FastAPI, Form, Depends, HTTPException, File, UploadFile
+from fastapi import FastAPI, Form, Depends, HTTPException, File, UploadFile, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -71,7 +71,7 @@ async def plant_disease(plant: str) -> FileResponse:
     return FileResponse(plant_disease_path)
 
 @app.get("/plant-details")
-async def plant_details(plant: str) -> FileResponse:
+async def plant_details(plant: str, disease: str, image: str) -> FileResponse:
     plant_details_path = os.path.join(frontend_path, f"plant-details.html")
     return FileResponse(plant_details_path)
 
@@ -122,4 +122,26 @@ async def analyze_plant(file: UploadFile = File(...)):
         }
     except Exception as e:
         print(f"Error analyzing plant: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/get-plant-disease")
+async def get_plant_disease(disease: str = Query(...)):
+    try:
+        # Fetch plant disease details from the database
+        details = db.query_disease(disease)
+        if not details:
+            raise HTTPException(status_code=404, detail="Details not found")
+        
+        return {
+            "name": details.name,
+            "species": details.species_affected,
+            "symptoms": details.symptoms,
+            "cause": details.cause,
+            "treatment": details.treatment,
+            "prevention": details.prevention,
+            "images": [image.image for image in details.sample_images],
+            "severity": details.severity,
+        }
+    except Exception as e:
+        print(f"Error fetching plant disease details: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dahon - Plant Details</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/plant-details.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
@@ -23,7 +26,7 @@
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            
+
             <div class="sidebar-content">
                 <nav class="sidebar-menu">
                     <a href="/dashboard" class="sidebar-menu-item">
@@ -58,7 +61,7 @@
                     </a>
                 </nav>
             </div>
-            
+
             <div class="sidebar-footer">
                 <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
                 <div class="sidebar-user-info">
@@ -78,10 +81,10 @@
             <!-- Header Section -->
             <div class="plant-details-header">
                 <div class="header-left">
-                <button onclick="window.history.back()" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
+                    <button onclick="window.history.back()" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
                         Back to Previous Page
-                </button>
+                    </button>
                 </div>
                 <div class="header-right">
                     <div class="analysis-info">
@@ -109,31 +112,31 @@
                             <img id="uploadedImage" src="" alt="Plant Disease Image" class="main-image">
                         </div>
                         <div class="overview-card">
-                                <h2><i class="fas fa-leaf"></i> Quick Overview</h2>
+                            <h2><i class="fas fa-leaf"></i> Quick Overview</h2>
                             <div id="affectedSpecies" class="overview-content">
                                 <h3>Affected Plants:</h3>
                                 <div class="affected-plants">Loading...</div>
-                                    </div>
+                            </div>
                         </div>
                         <!-- Reference Images Section -->
                         <div class="reference-images">
                             <h2><i class="fas fa-images"></i> Reference Images</h2>
                             <div class="image-grid" id="referenceImages">
                                 <!-- Images will be dynamically added here by noel/brian idk-->
-                                </div>
                             </div>
                         </div>
+                    </div>
 
                     <!-- Right Column - Details Cards -->
                     <div class="right-column">
                         <!-- Cause & Severity -->
                         <div class="detail-card">
-                                <h2><i class="fas fa-exclamation-circle"></i> Cause & Severity</h2>
+                            <h2><i class="fas fa-exclamation-circle"></i> Cause & Severity</h2>
                             <div class="card-content">
                                 <p id="diseaseCause">Loading...</p>
                                 <p id="diseaseSeverity">Loading...</p>
                             </div>
-                            </div>
+                        </div>
 
                         <!-- Symptoms -->
                         <div class="detail-card">
@@ -143,7 +146,7 @@
                                     <li>Loading symptoms...</li>
                                 </ul>
                             </div>
-                            </div>
+                        </div>
 
                         <!-- Prevention -->
                         <div class="detail-card">
@@ -171,43 +174,111 @@
     </div>
 
     <script src="js/sidebar.js"></script>
+    <script src="js/script.js"></script>
     <script>
-         // For demo only guyss 
-        document.addEventListener('DOMContentLoaded', function() {
+        // For demo only guyss  -Joel
+        // yeah for sure        -Noel
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM Content Loaded - Starting to display results');
-            
-            // Get data from localStorage for now (backend integration here noel)
+
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const plantParam = urlParams.get('plant');
+            const disease = urlParams.get('disease');
+            const imageParam = urlParams.get('image');
+
+            console.log('URL Parameters:', { plant: plantParam, disease: disease, image: imageParam });
+
+            // Get data from localStorage
             const analysisResultString = localStorage.getItem('analysisResult');
             const uploadedImage = localStorage.getItem('uploadedImage');
-            
+
             console.log('Retrieved from localStorage:', {
                 hasAnalysisResult: !!analysisResultString,
                 hasUploadedImage: !!uploadedImage
             });
 
             try {
-                const analysisResult = JSON.parse(analysisResultString || '{}');
-                console.log('Parsed analysis result:', analysisResult);
+                // Create default result with URL parameters
+                let analysisResult = {
+                    plant: plantParam || 'Unknown Plant',
+                    disease: disease || 'Loading...',
+                    scientificName: 'Loading...',
+                    timestamp: new Date().toISOString(),
+                    cause: 'Loading...',
+                    severity: 'Loading...',
+                    symptoms: ['Loading...'],
+                    prevention: ['Loading...'],
+                    treatment: ['Loading...'],
+                    image_path: imageParam
+                };
 
-                if (Object.keys(analysisResult).length > 0) {
+                // Override with localStorage if available
+                if (analysisResultString) {
+                    const storedResult = JSON.parse(analysisResultString);
+                    analysisResult = { ...analysisResult, ...storedResult };
+                }
+
+                // Initially update UI with default/localStorage data
+                updateUI(analysisResult);
+
+                // Then fetch from API if disease parameter is available
+                if (disease) {
+                    apiParams = new URLSearchParams(disease)
+                    apiParams.append('disease', disease);
+                    console.log('Fetching disease details from API for:', disease);
+
+                    fetch(`/api/get-plant-disease?${apiParams}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received disease data from API:', data);
+                            // Update the analysis result with the API data
+                            analysisResult = { ...analysisResult, ...data };
+                            // Update the UI with the new data
+                            updateUI(analysisResult);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching disease details:', error);
+                        });
+                }
+
+                // Function to update UI with analysisResult data
+                function updateUI(result) {
+                    console.log('Updating UI with:', result);
+
                     // Update basic information
-                    document.getElementById('diseaseName').textContent = analysisResult.disease;
-                    document.getElementById('scientificName').textContent = analysisResult.scientificName;
-                    document.getElementById('analysisTime').textContent = new Date(analysisResult.timestamp).toLocaleString();
+                    document.getElementById('diseaseName').textContent = result.disease;
+                    document.getElementById('scientificName').textContent = result.scientificName || result.plant;
+                    document.getElementById('analysisTime').textContent = new Date(result.timestamp).toLocaleString();
 
                     // Update affected plants
-                    if (analysisResult.affectedPlants) {
+                    if (result.affectedPlants) {
                         const affectedPlantsHtml = `
-                            <h3>Affected Plants:</h3>
-                            <p><strong>Primarily:</strong> ${analysisResult.affectedPlants.primary.join(', ')}</p>
-                            <p><strong>Occasionally:</strong> ${analysisResult.affectedPlants.secondary.join(', ')}</p>
-                        `;
+                                <h3>Affected Plants:</h3>
+                                <p><strong>Primarily:</strong> ${result.affectedPlants.primary.join(', ')}</p>
+                                <p><strong>Occasionally:</strong> ${result.affectedPlants.secondary.join(', ')}</p>
+                            `;
                         document.getElementById('affectedSpecies').innerHTML = affectedPlantsHtml;
+                    } else {
+                        document.getElementById('affectedSpecies').innerHTML = `
+                                <h3>Affected Plants:</h3>
+                                <p>${result.plant || 'Loading...'}</p>
+                            `;
                     }
 
                     // Update cause and severity
-                    document.getElementById('diseaseCause').textContent = analysisResult.cause;
-                    document.getElementById('diseaseSeverity').textContent = analysisResult.severity;
+                    document.getElementById('diseaseCause').textContent = result.cause;
+                    document.getElementById('diseaseSeverity').textContent = result.severity;
 
                     // Update lists
                     function updateList(elementId, items) {
@@ -217,26 +288,28 @@
                         }
                     }
 
-                    updateList('diseaseSymptoms', analysisResult.symptoms);
-                    updateList('diseasePrevention', analysisResult.prevention);
-                    updateList('diseaseTreatment', analysisResult.treatment);
+                    updateList('diseaseSymptoms', result.symptoms);
+                    updateList('diseasePrevention', result.prevention);
+                    updateList('diseaseTreatment', result.treatment);
+
+                    // Display uploaded image
+                    const imgElement = document.getElementById('uploadedImage');
+                    if (uploadedImage) {
+                        imgElement.src = uploadedImage;
+                        imgElement.style.display = 'block';
+                    } else if (result.image_path) {
+                        imgElement.src = result.image_path;
+                        imgElement.style.display = 'block';
+                    }
 
                     // Update reference images
-                    if (analysisResult.referenceImages && analysisResult.referenceImages.length > 0) {
+                    if (result.referenceImages && result.referenceImages.length > 0) {
                         const imageGrid = document.getElementById('referenceImages');
-                        imageGrid.innerHTML = analysisResult.referenceImages.map(imageSrc => `
-                            <div class="reference-image">
-                                <img src="${imageSrc}" alt="${analysisResult.disease} Reference Image">
-                            </div>
-                        `).join('');
-
-                        // Add click handlers for reference images
-                        imageGrid.querySelectorAll('.reference-image').forEach(image => {
-                            image.addEventListener('click', () => {
-                                const img = image.querySelector('img');
-                                openImageViewer(img.src);
-                            });
-                        });
+                        imageGrid.innerHTML = result.referenceImages.map(imageSrc => `
+                                <div class="reference-image">
+                                    <img src="${imageSrc}" alt="${result.disease} Reference Image">
+                                </div>
+                            `).join('');
                     } else {
                         // Add placeholder reference images
                         const placeholderImages = [
@@ -248,26 +321,19 @@
 
                         const imageGrid = document.getElementById('referenceImages');
                         imageGrid.innerHTML = placeholderImages.map((src, index) => `
-                            <div class="reference-image">
-                                <img src="${src}" alt="Reference Image ${index + 1}">
-                            </div>
-                        `).join('');
-
-                        // Add click handlers for placeholder images
-                        imageGrid.querySelectorAll('.reference-image').forEach(image => {
-                            image.addEventListener('click', () => {
-                                const img = image.querySelector('img');
-                                openImageViewer(img.src);
-                            });
-                        });
+                                <div class="reference-image">
+                                    <img src="${src}" alt="Reference Image ${index + 1}">
+                                </div>
+                            `).join('');
                     }
-                }
 
-                // Display uploaded image
-                if (uploadedImage) {
-                    const imgElement = document.getElementById('uploadedImage');
-                    imgElement.src = uploadedImage;
-                    imgElement.style.display = 'block';
+                    // Add click handlers for images
+                    document.querySelectorAll('.reference-image').forEach(image => {
+                        image.addEventListener('click', () => {
+                            const img = image.querySelector('img');
+                            openImageViewer(img.src);
+                        });
+                    });
                 }
 
             } catch (error) {
@@ -278,33 +344,7 @@
             localStorage.removeItem('analysisResult');
             localStorage.removeItem('uploadedImage');
         });
-
-        function openImageViewer(imageSrc) {
-            const viewer = document.createElement('div');
-            viewer.className = 'image-viewer';
-            viewer.innerHTML = `
-                <div class="image-viewer-content">
-                    <button class="close-button">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <img src="${imageSrc}" alt="Full size image">
-                </div>
-            `;
-
-            document.body.appendChild(viewer);
-            // Trigger reflow
-            viewer.offsetHeight;
-            viewer.classList.add('active');
-
-            viewer.addEventListener('click', (e) => {
-                if (e.target === viewer || e.target.closest('.close-button')) {
-                    viewer.classList.remove('active');
-                    setTimeout(() => {
-                        viewer.remove();
-                    }, 300);
-                }
-            });
-        }
     </script>
 </body>
-</html> 
+
+</html>

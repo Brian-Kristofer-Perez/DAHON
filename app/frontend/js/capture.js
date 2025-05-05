@@ -128,8 +128,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 imageStored: !!previewImage.src
             });
             
+            console.log("plant: ", result.plant);
+            console.log("disease: ", result.disease);
+            console.log("image_path: ", result.image_path);
+            
             // Navigate to results page
-            window.location.href = 'plant-details.html';
+            params = new URLSearchParams()
+            params.append('plant', result.plant);
+            params.append('disease', result.disease);
+            params.append('image_path', result.image_path);
+            window.location.href = `/plant-details?${params.toString()}`;
         })
         .catch(error => {
             console.error('Error analyzing image:', error);

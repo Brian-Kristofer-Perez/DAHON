@@ -1,57 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the plant ID from the URL parameters
+    // Get parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const plantId = urlParams.get('id');
-
-    if (!plantId) {
-        console.error('No plant ID provided');
+    const plant = urlParams.get('plant');
+    const disease = urlParams.get('disease');
+    const image = localStorage.getItem('uploadedImage');
+    
+    console.log("URL Parameters:", { plant, disease, image });
+    
+    if (!plant) {
+        console.error('No plant name provided');
         return;
     }
-
-    // Fetch plant data (this would come from the backend)
-    // i'm just using mock data for demo
+    
+    // Create a data object with available information
     const plantData = {
-        name: 'Early Blight',
-        image: 'assets/plant-diseases/early-blight.jpg',
-        diseaseType: 'Fungal Disease',
-        affectedSpecies: [
-            'Primarily: Tomato, Potato',
-            'Occasionally: Eggplant and other solanaceous crops'
-        ],
-        cause: 'Fungal (Alternaria solani)',
-        severity: 'Moderate to severe, especially in warm, wet climates',
-        symptoms: [
-            'Begins on older, lower leaves as small dark spots',
-            'Spots expand into concentric rings, forming a characteristic "bullseye" pattern',
-            'Surrounding tissue often turns yellow and the leaf dies',
-            'In severe cases, progresses upward causing defoliation',
-            'Dark, sunken lesions may develop on stems and fruits, especially near the calyx'
-            
-        ],
-        prevention: [
-            'Apply fungicides (like chlorothalonil), mancozeb, copper-based products, or azoxystrobin',
-            'Begin treatments early, especially in humid or wet weather',
-            'Remove and destroy infected plant debris',
-            'Improve air circulation by pruning and staking'
-        ],
-        treatment: [
-            'Apply fungicides like chlorothalonil, mancozeb, copper-based products, or azoxystrobin',
-            'Begin treatments early, especially in humid or wet weather',
-            'Remove and destroy infected plant debris',
-            'Improve air circulation by pruning and staking'
-        ],
+        name: plant || "Analyzing...",
+        image: image || "assets/placeholder-image.jpg",
+        diseaseType: disease || "Unknown Plant",
+        affectedSpecies: ["Loading..."],
+        cause: "Loading...",
+        severity: "Loading...",
+        symptoms: ["Loading..."],
+        prevention: ["Loading..."],
+        treatment: ["Loading..."],
         referenceImages: [
-            'assets/plant-diseases/early-blight-1.jpg',
-            'assets/plant-diseases/early-blight-2.jpg',
-            'assets/plant-diseases/early-blight-3.jpg',
-            'assets/plant-diseases/early-blight-4.jpg'
+            "assets/placeholder-image.jpg",
+            "assets/placeholder-image.jpg"
         ]
     };
-
+    
+    // Try to get analysis result from localStorage
+    try {
+        const analysisResult = JSON.parse(localStorage.getItem('analysisResult'));
+        if (analysisResult) {
+            console.log("Analysis result found:", analysisResult);
+            
+            // Update with analysis data if available
+            plantData.name = analysisResult.disease || plantData.name;
+            plantData.diseaseType = analysisResult.plant || plantData.diseaseType;
+            
+            if (analysisResult.image_path) {
+                plantData.referenceImages = [analysisResult.image_path];
+            }
+        }
+    } catch (error) {
+        console.error("Error parsing analysis result:", error);
+    }
+    
     // Update the UI with plant data
     updatePlantDetails(plantData);
-
-    // Add animations
+    
+    // Animation code remains unchanged
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
