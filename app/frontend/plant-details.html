@@ -242,8 +242,20 @@
                         })
                         .then(data => {
                             console.log('Received disease data from API:', data);
-                            // Update the analysis result with the API data
-                            analysisResult = { ...analysisResult, ...data };
+                    
+                            // Map API response to analysisResult structure
+                            const analysisResult = {
+                                plant: data.name || 'Unknown Plant',
+                                scientificName: data.species.map(species => species.species).join(', ') || 'Unknown Species',
+                                symptoms: data.symptoms.map(symptom => symptom.symptom) || ['No symptoms available'],
+                                cause: data.cause || 'Unknown cause',
+                                treatment: data.treatment.map(treatment => treatment.treatment) || ['No treatment available'],
+                                prevention: data.prevention.map(prevention => prevention.prevention) || ['No prevention methods available'],
+                                referenceImages: data.images || [],
+                                severity: data.severity || 'Unknown severity',
+                                timestamp: new Date().toISOString(), // Add a timestamp for when the data was fetched
+                            };
+                    
                             // Update the UI with the new data
                             updateUI(analysisResult);
                         })
@@ -312,13 +324,11 @@
                             `).join('');
                     } else {
                         // Add placeholder reference images
-                        const placeholderImages = [
-                            'assets/plant-diseases/placeholder-1.jpg',
-                            'assets/plant-diseases/placeholder-2.jpg',
-                            'assets/plant-diseases/placeholder-3.jpg',
-                            'assets/plant-diseases/placeholder-4.jpg'
+                        const placeholderImages = result.referenceImages || [
+                            'assets/images/placeholder1.jpg',
+                            'assets/images/placeholder2.jpg',
+                            'assets/images/placeholder3.jpg'
                         ];
-
                         const imageGrid = document.getElementById('referenceImages');
                         imageGrid.innerHTML = placeholderImages.map((src, index) => `
                                 <div class="reference-image">

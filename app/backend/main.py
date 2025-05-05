@@ -71,7 +71,7 @@ async def plant_disease(plant: str) -> FileResponse:
     return FileResponse(plant_disease_path)
 
 @app.get("/plant-details")
-async def plant_details(plant: str, disease: str, image: str) -> FileResponse:
+async def plant_details() -> FileResponse:
     plant_details_path = os.path.join(frontend_path, f"plant-details.html")
     return FileResponse(plant_details_path)
 

@@ -127,11 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 analysisResult: result,
                 imageStored: !!previewImage.src
             });
-            
-            console.log("plant: ", result.plant);
-            console.log("disease: ", result.disease);
-            console.log("image_path: ", result.image_path);
-            
+
             // Navigate to results page
             params = new URLSearchParams()
             params.append('plant', result.plant);
