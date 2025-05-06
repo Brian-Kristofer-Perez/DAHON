@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
               params = new URLSearchParams()
               params.append("id", userData.id)
-              window.location.href = `/dashboard?${params.toString()}}`
+              window.location.href = `/dashboard?${params.toString()}`
             }, 2000)
           })
           .catch(error => {

@@ -71,12 +71,22 @@ class Database:
                 password=password, 
                 first_name=first_name, 
                 last_name=last_name, 
-                contact_number=contact_number,
-                profile_picture=b''  # Set empty bytes as default value
+                contact_number=contact_number
             )
             session.add(user)
             session.commit()
-            return user  # Return the user object for immediate access to ID
+            
+            # Create a detached copy of the user with all data already loaded
+            user_dict = {
+                "id": user.id,
+                "email": user.email,
+                "password": user.password,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "contact_number": user.contact_number
+            }
+            
+            return user_dict  # Return a dictionary instead of the SQLAlchemy object
 
 
     def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = '', new_profile_picture: bytes = None):

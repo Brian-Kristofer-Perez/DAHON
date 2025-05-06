@@ -1,10 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== Sidebar Functionality =====
-  initSidebar()
-
-  // ===== User Data =====
-  fetchUserData()
-
   // ===== Recent Scans Navigation =====
   initRecentScans()
 
@@ -20,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update welcome message with user's name
   const welcomeUserName = document.getElementById('welcomeUserName');
   const sidebarUserName = document.querySelector('.sidebar-user-name');
-  
+
   // Get user name from sidebar and update welcome message
   if (sidebarUserName && welcomeUserName) {
     welcomeUserName.textContent = sidebarUserName.textContent;
@@ -37,11 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update activity stats
   const totalScans = document.getElementById('totalScans');
   const lastScan = document.getElementById('lastScan');
-  
+
   if (totalScans) {
     animateValue(totalScans, 0, 75, 2000);
   }
-  
+
   if (lastScan) {
     animateValue(lastScan, 0, 2, 1000);
   }
@@ -70,18 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add hover effects to scan cards
   const scanCards = document.querySelectorAll('.scan-card');
   scanCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
+    card.addEventListener('mouseenter', function () {
       this.style.transform = 'translateY(-10px)';
     });
 
-    card.addEventListener('mouseleave', function() {
+    card.addEventListener('mouseleave', function () {
       this.style.transform = 'translateY(0)';
     });
   });
 
   const diseaseCards = document.querySelectorAll('.disease-card');
   diseaseCards.forEach(card => {
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
       const diseaseName = this.querySelector('.disease-name').textContent;
       showDiseaseDetails(diseaseName);
     });
@@ -91,13 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const sortButton = document.querySelector('.btn-outline[data-action="sort"]');
 
   if (filterButton) {
-    filterButton.addEventListener('click', function() {
+    filterButton.addEventListener('click', function () {
       showFilterOptions();
     });
   }
 
   if (sortButton) {
-    sortButton.addEventListener('click', function() {
+    sortButton.addEventListener('click', function () {
       showSortOptions();
     });
   }
@@ -137,120 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 })
 
-function initSidebar() {
-  const sidebar = document.getElementById("sidebar")
-  const sidebarToggle = document.getElementById("sidebarToggle")
-  const mobileSidebarToggle = document.getElementById("mobileSidebarToggle")
-  const sidebarOverlay = document.getElementById("sidebarOverlay")
-
-  if (sidebarToggle) {
-    sidebarToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("sidebar-collapsed")
-
-      if (sidebar.classList.contains("sidebar-collapsed")) {
-        sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>'
-      } else {
-        sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>'
-      }
-    })
-  }
-
-  if (mobileSidebarToggle) {
-    mobileSidebarToggle.addEventListener("click", () => {
-      sidebar.classList.add("mobile-open")
-      sidebarOverlay.classList.add("active")
-    })
-  }
-
-  if (sidebarOverlay) {
-    sidebarOverlay.addEventListener("click", () => {
-      sidebar.classList.remove("mobile-open")
-      sidebarOverlay.classList.remove("active")
-    })
-  }
-
-  function handleResponsiveLayout() {
-    if (window.innerWidth <= 768) {
-      sidebar.classList.remove("sidebar-collapsed")
-      if (sidebarToggle) {
-        sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>'
-      }
-    }
-  }
-
-  handleResponsiveLayout()
-  window.addEventListener("resize", handleResponsiveLayout)
-}
-
-/**
- * Get and display user data from the API using the user ID from URL
- */
-function fetchUserData() {
-  try {
-    // Get user ID from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    
-    if (!userId) {
-      console.error("No user ID found in URL parameters");
-      return;
-    }
-    
-    // Store user ID in localStorage for use in other pages
-    localStorage.setItem("userId", userId);
-    
-    // Update sidebar links to include user ID
-    updateSidebarLinks(userId);
-    
-    // Fetch user data from the API
-    fetch(`/api/get-user-id?id=${userId}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user data: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(userData => {
-        // Update UI with user data
-        const sidebarUserName = document.querySelector('.sidebar-user-name');
-        if (sidebarUserName) {
-          sidebarUserName.textContent = userData.first_name;
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching user data:", error);
-        // Fall back to default values if API fails
-        setDefaultUserData();
-      });
-  } catch (error) {
-    console.error("Error in fetchUserData:", error);
-    setDefaultUserData();
-  }
-}
-
-/**
- * Update sidebar links to include the user ID parameter
- */
-function updateSidebarLinks(userId) {
-  const sidebarLinks = document.querySelectorAll('.sidebar-menu-item a');
-  sidebarLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    // Skip the login/logout link
-    if (href && href !== '/login' && !href.includes('?id=')) {
-      // Only add ID parameter to links that don't already have one
-      if (!href.includes('?')) {
-        link.setAttribute('href', `${href}?id=${userId}`);
-      }
-    }
-  });
-}
 
 /**
  * Set default user data if API call fails
  */
 function setDefaultUserData() {
   const defaultName = "User";
-  
+
   const welcomeUserNameElements = document.querySelectorAll("#welcomeUserName");
   welcomeUserNameElements.forEach((element) => {
     element.textContent = defaultName;
@@ -583,12 +470,12 @@ function showDiseaseDetails(diseaseName) {
 
   // Add close handler
   const closeButton = modal.querySelector('.close-modal');
-  closeButton.addEventListener('click', function() {
+  closeButton.addEventListener('click', function () {
     modal.remove();
   });
 
   // Close modal when clicking outside
-  modal.addEventListener('click', function(e) {
+  modal.addEventListener('click', function (e) {
     if (e.target === modal) {
       modal.remove();
     }
@@ -621,7 +508,7 @@ function showFilterOptions() {
 
   // Add apply filter handler
   const applyButton = filterOptions.querySelector('.apply-filter');
-  applyButton.addEventListener('click', function() {
+  applyButton.addEventListener('click', function () {
     const selectedFilters = Array.from(filterOptions.querySelectorAll('input:checked'))
       .map(input => input.value);
     applyFilters(selectedFilters);
@@ -655,7 +542,7 @@ function showSortOptions() {
 
   // Add apply sort handler
   const applyButton = sortOptions.querySelector('.apply-sort');
-  applyButton.addEventListener('click', function() {
+  applyButton.addEventListener('click', function () {
     const selectedSort = sortOptions.querySelector('input:checked').value;
     applySort(selectedSort);
     sortOptions.remove();
@@ -679,7 +566,7 @@ function applyFilters(filters) {
 function applySort(sortBy) {
   const scanCards = document.querySelectorAll('.scan-card');
   const cardsArray = Array.from(scanCards);
-  
+
   cardsArray.sort((a, b) => {
     switch (sortBy) {
       case 'date':

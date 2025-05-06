@@ -88,20 +88,20 @@ async def register_user(
         if not db.validate_email(email):
             raise HTTPException(status_code=400, detail="Email already registered")
         
-        # Add the new user to the database and get the user object with ID
-        user = db.add_user(
+        # Add the new user to the database and get the user data
+        user_data = db.add_user(
             email=email,
             password=password,
             first_name=firstName,
             last_name=lastName,
         )
         
-        # Return the user ID for redirection to dashboard
+        # Return the user data for redirection to dashboard
         return {
-            "id": user.id,
-            "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
+            "id": user_data["id"],
+            "email": user_data["email"],
+            "first_name": user_data["first_name"],
+            "last_name": user_data["last_name"],
             "message": "User registered successfully"
         }
     except Exception as e:
@@ -189,7 +189,7 @@ async def get_plant_disease(disease: str = Query(...)):
         print(f"Error fetching plant disease details: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/get-user-id")
+@app.get("/api/get-user")
 async def get_user_id(id: int = Query(...)):
     try:
         user = db.get_user_by_id(id)
