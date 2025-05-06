@@ -4,8 +4,8 @@ from fastapi import FastAPI, Form, Depends, HTTPException, File, UploadFile, Que
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from Database import CRUD
-from ML import ML
+from app.backend.Database import CRUD
+from app.backend.ML import ML
 import shutil
 from base64 import b64encode, b64decode
 import uuid
@@ -47,22 +47,22 @@ async def register() -> FileResponse:
     return FileResponse(register_path)
 
 @app.get("/dashboard")
-async def dashboard() -> FileResponse:
+async def dashboard(id: int = Query(...)) -> FileResponse:
     dashboard = os.path.join(frontend_path, "dashboard.html")
     return FileResponse(dashboard)
 
 @app.get("/account")
-async def account() -> FileResponse:
+async def account(id: int = Query(...)) -> FileResponse:
     account_path = os.path.join(frontend_path, "account.html")
     return FileResponse(account_path)
 
 @app.get("/capture")
-async def capture() -> FileResponse:
+async def capture(id: int = Query(...)) -> FileResponse:
     capture_path = os.path.join(frontend_path, "capture.html")
     return FileResponse(capture_path)
 
 @app.get("/handbook")
-async def handbook() -> FileResponse:
+async def handbook(id: int = Query(...)) -> FileResponse:
     handbook_path = os.path.join(frontend_path, "handbook.html")
     return FileResponse(handbook_path)
 
@@ -72,7 +72,7 @@ async def plant_disease(plant: str) -> FileResponse:
     return FileResponse(plant_disease_path)
 
 @app.get("/plant-details")
-async def plant_details() -> FileResponse:
+async def plant_details(id: int = Query(...), plant: str = Query(...), disease: str = Query(...), image_path: str = Query(...)) -> FileResponse:
     plant_details_path = os.path.join(frontend_path, f"plant-details.html")
     return FileResponse(plant_details_path)
 
@@ -85,29 +85,30 @@ async def register_user(
 ):
     try:
         # Check if the email already exists
-        existing_user = db.query_user(email, "")
-        if existing_user:
+        if not db.validate_email(email):
             raise HTTPException(status_code=400, detail="Email already registered")
         
-        # Add the new user to the database
-        db.add_user(
+        # Add the new user to the database and get the user data
+        user_data = db.add_user(
             email=email,
             password=password,
             first_name=firstName,
             last_name=lastName,
         )
         
+        # Return the user data for redirection to dashboard
         return {
-            "email": email,
-            "first_name": firstName,
-            "last_name": lastName,
+            "id": user_data["id"],
+            "email": user_data["email"],
+            "first_name": user_data["first_name"],
+            "last_name": user_data["last_name"],
             "message": "User registered successfully"
         }
     except Exception as e:
         if isinstance(e, HTTPException):
             raise e
         print(f"Registration error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error during registration")
+        raise HTTPException(status_code=500, detail=f"Internal server error during registration: {str(e)}")
 
 @app.post("/login")
 async def login_user(
@@ -186,4 +187,21 @@ async def get_plant_disease(disease: str = Query(...)):
         }
     except Exception as e:
         print(f"Error fetching plant disease details: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/get-user")
+async def get_user_id(id: int = Query(...)):
+    try:
+        user = db.get_user_by_id(id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {
+            "id": user.id,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }
+    except Exception as e:
+        print(f"Error fetching user ID: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

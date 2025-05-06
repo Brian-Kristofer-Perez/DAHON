@@ -85,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle analyze button
     analyzeButton.addEventListener('click', () => {
+        currparams = new URLSearchParams(window.location.search);
+        userId = currparams.get('id') || localStorage.getItem('userId');
+
         // Check if image is selected
         if (!previewImage.src) {
             alert('Please select an image to analyze');
@@ -130,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Navigate to results page
             params = new URLSearchParams()
+            params.append('id', userId);
             params.append('plant', result.plant);
             params.append('disease', result.disease);
             params.append('image_path', result.image_path);

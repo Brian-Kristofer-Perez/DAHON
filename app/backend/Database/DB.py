@@ -6,8 +6,10 @@ from sqlalchemy.orm import sessionmaker
 # change these to your own local database info!
 # In future projects, let's use environment variables
 # because hardcoding this is a mortal sin
+
+# this is why i suggested we use docker
 user = "root"
-password = "12345678"
+password = ""
 port = "3306"
 database_name = "DahonDB"
 

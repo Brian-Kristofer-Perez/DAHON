@@ -26,25 +26,25 @@
             
             <div class="sidebar-content">
                 <nav class="sidebar-menu">
-                    <a href="/dashboard" class="sidebar-menu-item">
+                    <a href="/dashboard?id=" class="sidebar-menu-item">
                         <span class="sidebar-menu-icon">
                             <i class="fas fa-chart-line"></i>
                         </span>
                         <span class="sidebar-menu-text">Dashboard</span>
                     </a>
-                    <a href="/capture" class="sidebar-menu-item">
+                    <a href="/capture?id=" class="sidebar-menu-item">
                         <span class="sidebar-menu-icon">
                             <i class="fas fa-camera"></i>
                         </span>
                         <span class="sidebar-menu-text">Capture</span>
                     </a>
-                    <a href="/handbook" class="sidebar-menu-item">
+                    <a href="/handbook?id=" class="sidebar-menu-item">
                         <span class="sidebar-menu-icon">
                             <i class="fas fa-book"></i>
                         </span>
                         <span class="sidebar-menu-text">Handbook</span>
                     </a>
-                    <a href="/account" class="sidebar-menu-item active">
+                    <a href="/account?id=" class="sidebar-menu-item active">
                         <span class="sidebar-menu-icon">
                             <i class="fas fa-user"></i>
                         </span>
@@ -62,7 +62,7 @@
             <div class="sidebar-footer">
                 <img src="assets/avatar/user-img.png" alt="User Avatar" class="sidebar-user-avatar">
                 <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">Johnathan</div>
+                    <div class="sidebar-user-name">User</div>
                     <div class="sidebar-user-role">Welcome back 👋</div>
                 </div>
             </div>
@@ -87,8 +87,8 @@
                             </div>
                         </div>
                         <div class="profile-info">
-                            <h1 class="username">@User-Name</h1>
-                            <p class="email">user@email.com</p>
+                            <h1 class="username" id="h-username">@User-Name</h1>
+                            <p class="email" id="emailAddress">user@email.com</p>
                             <p class="join-date">Member since April 2025</p>
                         </div>
                     </div>
@@ -226,122 +226,6 @@
     </div>
 
     <script src="js/sidebar.js"></script>
-    <script>
-        // Tab switching functionality
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const settingsContents = document.querySelectorAll('.settings-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                settingsContents.forEach(content => content.classList.add('hidden'));
-
-                button.classList.add('active');
-                const tabId = button.dataset.tab + 'Settings';
-                document.getElementById(tabId).classList.remove('hidden');
-            });
-        });
-
-        // Password visibility toggle
-        const toggleButtons = document.querySelectorAll('.toggle-password');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const input = button.parentElement.querySelector('input');
-                const icon = button.querySelector('i');
-                
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            });
-        });
-
-        // Password validation
-        const newPasswordInput = document.getElementById('newPassword');
-        const requirements = {
-            length: str => str.length >= 8,
-            uppercase: str => /[A-Z]/.test(str),
-            lowercase: str => /[a-z]/.test(str),
-            number: str => /[0-9]/.test(str),
-            special: str => /[^A-Za-z0-9]/.test(str)
-        };
-
-        newPasswordInput.addEventListener('input', () => {
-            const password = newPasswordInput.value;
-            
-            for (const [requirement, validateFunc] of Object.entries(requirements)) {
-                const li = document.querySelector(`[data-requirement="${requirement}"]`);
-                const icon = li.querySelector('i');
-                
-                if (validateFunc(password)) {
-                    li.classList.add('valid');
-                    icon.classList.remove('fa-circle');
-                    icon.classList.add('fa-check-circle');
-                } else {
-                    li.classList.remove('valid');
-                    icon.classList.remove('fa-check-circle');
-                    icon.classList.add('fa-circle');
-                }
-            }
-        });
-
-        // Avatar upload preview
-        const avatarUpload = document.getElementById('avatarUpload');
-        const currentAvatar = document.getElementById('currentAvatar');
-
-        avatarUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentAvatar.src = e.target.result;
-                    showToast('Avatar updated successfully!');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Form submission handlers
-        document.getElementById('profileForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Add profile update logic here
-            showToast('Profile updated successfully!');
-        });
-
-        document.getElementById('passwordForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (newPassword !== confirmPassword) {
-                showToast('Passwords do not match!', 'error');
-                return;
-            }
-
-            // Add password update logic here
-            showToast('Password updated successfully!');
-        });
-
-        // notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = toast.querySelector('.toast-message');
-            const icon = toast.querySelector('i');
-
-            toastMessage.textContent = message;
-            toast.className = `toast ${type}`;
-            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-    </script>
+    <script src="js/account.js"></script>
 </body>
-</html> 
+</html>

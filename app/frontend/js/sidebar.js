@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve user ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    
+    // Store userId in localStorage if it exists in the URL
+    if (userId) {
+        localStorage.setItem("userId", userId);
+    }
+
+    // Initialize sidebar functionality
+    initSidebar();
+
+    // fetches user data
+    fetchUserData()   
+    
+    // Update sidebar links with user ID parameter
+    updateSidebarLinks(userId);
+
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
@@ -83,4 +101,122 @@ document.addEventListener('DOMContentLoaded', function() {
             item.classList.add('active');
         }
     });
-}); 
+});
+
+/**
+ * Update all sidebar links to include the user ID parameter from the URL or localStorage
+ * @param {string} passedUserId - User ID passed from the calling function
+ */
+function updateSidebarLinks(userId) {
+  const sidebarLinks = document.querySelectorAll('.sidebar-menu-item');
+  sidebarLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    
+    // Skip empty hrefs, login/logout links, or links already containing the user ID
+    if (!href || href === '/login' || href.includes('id=' + userId)) {
+      return;
+    }
+    
+    // Parse the URL to handle existing query parameters
+    try {
+      const url = new URL(href, window.location.origin);
+      
+      // Add the user ID to the query parameters
+      url.searchParams.set('id', userId);
+      
+      // Update the href with the new URL that includes the user ID
+      link.setAttribute('href', url.pathname + url.search);
+      
+    } catch (error) {
+      console.error(`Error updating sidebar link ${href}:`, error);
+    }
+  });
+}
+
+/**
+ * Get and display user data from the API using the user ID from URL
+ */
+function fetchUserData() {
+  try {
+    // Get user ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+
+    if (!userId) {
+      console.error("No user ID found in URL parameters");
+      return;
+    }
+
+    // Store user ID in localStorage for use in other pages
+    localStorage.setItem("userId", userId);
+
+    // Fetch user data from the API
+    fetch(`/api/get-user?id=${userId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(userData => {
+        // Update UI with user data
+        const sidebarUserName = document.querySelector('.sidebar-user-name');
+        if (sidebarUserName) {
+          sidebarUserName.textContent = userData.first_name;
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+        // Fall back to default values if API fails
+        setDefaultUserData();
+      });
+  } catch (error) {
+    console.error("Error in fetchUserData:", error);
+    setDefaultUserData();
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById("sidebar")
+  const sidebarToggle = document.getElementById("sidebarToggle")
+  const mobileSidebarToggle = document.getElementById("mobileSidebarToggle")
+  const sidebarOverlay = document.getElementById("sidebarOverlay")
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("sidebar-collapsed")
+
+      if (sidebar.classList.contains("sidebar-collapsed")) {
+        sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>'
+      } else {
+        sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>'
+      }
+    })
+  }
+
+  if (mobileSidebarToggle) {
+    mobileSidebarToggle.addEventListener("click", () => {
+      sidebar.classList.add("mobile-open")
+      sidebarOverlay.classList.add("active")
+    })
+  }
+
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", () => {
+      sidebar.classList.remove("mobile-open")
+      sidebarOverlay.classList.remove("active")
+    })
+  }
+
+  function handleResponsiveLayout() {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove("sidebar-collapsed")
+      if (sidebarToggle) {
+        sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>'
+      }
+    }
+  }
+
+  handleResponsiveLayout()
+  window.addEventListener("resize", handleResponsiveLayout)
+}
