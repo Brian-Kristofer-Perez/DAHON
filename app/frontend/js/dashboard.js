@@ -1,5 +1,3 @@
-import { Chart } from "@/components/ui/chart"
-
 document.addEventListener("DOMContentLoaded", () => {
   // ===== Sidebar Functionality =====
   initSidebar()
@@ -185,32 +183,87 @@ function initSidebar() {
 }
 
 /**
- * Get and display user data
+ * Get and display user data from the API using the user ID from URL
  */
 function fetchUserData() {
   try {
-    // replace with actual API call, here are samples from chatgpt
-    // const response = await fetch('/api/user/profile');
-    // const userData = await response.json();
-
-    // Simulate API call for demon
-    const userData = {
-      firstName: "Johnathan",
-      role: "Plant Enthusiast",
+    // Get user ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    
+    if (!userId) {
+      console.error("No user ID found in URL parameters");
+      return;
     }
-
-    const welcomeUserNameElements = document.querySelectorAll("#welcomeUserName")
-    welcomeUserNameElements.forEach((element) => {
-      element.textContent = userData.firstName
-    })
-
-    const userNameElement = document.getElementById("userName")
-    if (userNameElement) {
-      userNameElement.textContent = userData.firstName
-    }
+    
+    // Store user ID in localStorage for use in other pages
+    localStorage.setItem("userId", userId);
+    
+    // Update sidebar links to include user ID
+    updateSidebarLinks(userId);
+    
+    // Fetch user data from the API
+    fetch(`/api/get-user-id?id=${userId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(userData => {
+        // Update UI with user data
+        const sidebarUserName = document.querySelector('.sidebar-user-name');
+        if (sidebarUserName) {
+          sidebarUserName.textContent = userData.first_name;
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+        // Fall back to default values if API fails
+        setDefaultUserData();
+      });
   } catch (error) {
-    console.error("Error fetching user data:", error)
-    //default values as fallback just incase (source: chatgpt)
+    console.error("Error in fetchUserData:", error);
+    setDefaultUserData();
+  }
+}
+
+/**
+ * Update sidebar links to include the user ID parameter
+ */
+function updateSidebarLinks(userId) {
+  const sidebarLinks = document.querySelectorAll('.sidebar-menu-item a');
+  sidebarLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    // Skip the login/logout link
+    if (href && href !== '/login' && !href.includes('?id=')) {
+      // Only add ID parameter to links that don't already have one
+      if (!href.includes('?')) {
+        link.setAttribute('href', `${href}?id=${userId}`);
+      }
+    }
+  });
+}
+
+/**
+ * Set default user data if API call fails
+ */
+function setDefaultUserData() {
+  const defaultName = "User";
+  
+  const welcomeUserNameElements = document.querySelectorAll("#welcomeUserName");
+  welcomeUserNameElements.forEach((element) => {
+    element.textContent = defaultName;
+  });
+
+  const sidebarUserName = document.querySelector('.sidebar-user-name');
+  if (sidebarUserName) {
+    sidebarUserName.textContent = defaultName;
+  }
+
+  const userNameElement = document.getElementById("userName");
+  if (userNameElement) {
+    userNameElement.textContent = defaultName;
   }
 }
 

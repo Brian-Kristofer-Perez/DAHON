@@ -26,7 +26,7 @@ class Database:
         with Session() as session:
             statement = Select(Models.User).where(Models.User.email == email)
             output = session.scalars(statement).first()
-            return len(output) == 0
+            return output is None  # Fixed: Return True if email doesn't exist
 
 
     # query all scans made by user, returns array of scan objects.
@@ -63,18 +63,27 @@ class Database:
         return output
 
 
-    def add_user(self, email, password, first_name, last_name, contact_number):
+    def add_user(self, email, password, first_name, last_name, contact_number=None):
         with Session() as session:
-            user = Models.User(email= email, password= password, first_name= first_name, last_name= last_name, contact_number= contact_number)
+            # Initialize with empty bytes for profile_picture to avoid NULL value
+            user = Models.User(
+                email=email, 
+                password=password, 
+                first_name=first_name, 
+                last_name=last_name, 
+                contact_number=contact_number,
+                profile_picture=b''  # Set empty bytes as default value
+            )
             session.add(user)
             session.commit()
+            return user  # Return the user object for immediate access to ID
 
 
     def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = '', new_profile_picture: bytes = None):
         with Session() as session:
             statement = Update(Models.User).where(Models.User.id == user_id).values(
                 email= new_email,
-                passworld= new_password,
+                password= new_password,  # Fixed: corrected typo from "passworld" to "password"
                 first_name= new_first_name,
                 last_name= new_last_name,
                 contact_number = new_contact_number,
@@ -98,6 +107,22 @@ class Database:
                                mime_type = f"image/{filetype.lower()}")
             session.add(scan)
             session.commit()
+
+    def get_user_by_id(self, user_id: int) -> Models.User:
+        """
+        Retrieve a user by their ID from the database.
+        
+        Args:
+            user_id (int): The ID of the user to retrieve
+            
+        Returns:
+            Models.User: The user object if found, None otherwise
+        """
+        with Session() as session:
+            statement = Select(Models.User).where(Models.User.id == user_id)
+            output = session.scalars(statement).first()
+        
+            return output
 
 
 

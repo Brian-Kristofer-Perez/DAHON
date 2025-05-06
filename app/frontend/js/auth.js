@@ -138,31 +138,70 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = true
         submitBtn.innerHTML = '<span class="loading-indicator"></span> Logging in...'
 
-        // Simulate API call
-        setTimeout(() => {
-          // Success message
-          const message = document.createElement("div")
-          message.className = "message message-success"
-          message.innerHTML = `
-            <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span>Login successful! Redirecting...</span>
-          `
+        // Create form data
+        const formData = new FormData()
+        formData.append("email", email.value.trim())
+        formData.append("password", password.value)
 
-          // Insert message before form
-          loginForm.parentNode.insertBefore(message, loginForm)
+        // Call the actual API
+        fetch("/login", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Login failed: ${response.status}`)
+            }
+            return response.json()
+          })
+          .then(userData => {
+            // Success message
+            const message = document.createElement("div")
+            message.className = "message message-success"
+            message.innerHTML = `
+              <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Login successful! Redirecting...</span>
+            `
 
-          // Reset button
-          submitBtn.disabled = false
-          submitBtn.innerHTML = originalText
+            // Insert message before form
+            loginForm.parentNode.insertBefore(message, loginForm)
 
-          // Redirect after delay
-          setTimeout(() => {
-            window.location.href = "/dashboard"
-          }, 2000)
-        }, 1500)
+            // Store user ID in localStorage for later use
+            localStorage.setItem("userId", userData.id)
+
+            // Redirect after delay to dashboard with user ID
+            setTimeout(() => {
+              params = new URLSearchParams()
+              params.append("id", userData.id)
+              window.location.href = `/dashboard?${params.toString()}`
+            }, 2000)
+          })
+          .catch(error => {
+            console.error("Login error:", error)
+            
+            // Error message
+            const message = document.createElement("div")
+            message.className = "message message-error"
+            message.innerHTML = `
+              <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span>Invalid email or password. Please try again.</span>
+            `
+
+            // Insert message before form
+            loginForm.parentNode.insertBefore(message, loginForm)
+          })
+          .finally(() => {
+            // Reset button
+            submitBtn.disabled = false
+            submitBtn.innerHTML = originalText
+          })
       }
     })
   }
@@ -253,31 +292,82 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = true
         submitBtn.innerHTML = '<span class="loading-indicator"></span> Creating account...'
 
-        // Simulate API call
-        setTimeout(() => {
-          // Success message
-          const message = document.createElement("div")
-          message.className = "message message-success"
-          message.innerHTML = `
-            <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span>Account created successfully! Redirecting to dashboard...</span>
-          `
+        // Create form data
+        const formData = new FormData()
+        formData.append("firstName", firstName.value.trim())
+        formData.append("lastName", lastName.value.trim())
+        formData.append("email", email.value.trim())
+        formData.append("password", password.value)
 
-          // Insert message before form
-          signupForm.parentNode.insertBefore(message, signupForm)
+        // Call the actual register API
+        fetch("/register", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => {
+            if (!response.ok) {
+              // If the response is 400, it's likely due to email already registered
+              if (response.status === 400) {
+                throw new Error("Email already registered")
+              }
+              throw new Error(`Registration failed: ${response.status}`)
+            }
+            return response.json()
+          })
+          .then(userData => {
+            // Success message
+            const message = document.createElement("div")
+            message.className = "message message-success"
+            message.innerHTML = `
+              <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Account created successfully! Redirecting to dashboard...</span>
+            `
 
-          // Reset button
-          submitBtn.disabled = false
-          submitBtn.innerHTML = originalText
+            // Insert message before form
+            signupForm.parentNode.insertBefore(message, signupForm)
 
-          // Redirect after delay
-          setTimeout(() => {
-            window.location.href = "/dashboard"
-          }, 2000)
-        }, 1500)
+            // Store user ID in localStorage for later use
+            localStorage.setItem("userId", userData.id)
+
+            // Redirect after delay to dashboard with user ID
+            setTimeout(() => {
+              params = new URLSearchParams()
+              params.append("id", userData.id)
+              window.location.href = `/dashboard?${params.toString()}}`
+            }, 2000)
+          })
+          .catch(error => {
+            console.error("Registration error:", error)
+            
+            // Determine error message
+            let errorMessage = "An error occurred during registration. Please try again."
+            if (error.message.includes("Email already registered")) {
+              errorMessage = "This email is already registered. Please use a different email or log in."
+            }
+            
+            // Error message
+            const message = document.createElement("div")
+            message.className = "message message-error"
+            message.innerHTML = `
+              <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span>${errorMessage}</span>
+            `
+
+            // Insert message before form
+            signupForm.parentNode.insertBefore(message, signupForm)
+          })
+          .finally(() => {
+            // Reset button
+            submitBtn.disabled = false
+            submitBtn.innerHTML = originalText
+          })
       }
     })
   }
