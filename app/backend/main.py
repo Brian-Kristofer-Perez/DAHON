@@ -62,7 +62,7 @@ async def capture(id: int = Query(...)) -> FileResponse:
     return FileResponse(capture_path)
 
 @app.get("/handbook")
-async def handbook() -> FileResponse:
+async def handbook(id: int = Query(...)) -> FileResponse:
     handbook_path = os.path.join(frontend_path, "handbook.html")
     return FileResponse(handbook_path)
 
@@ -72,7 +72,7 @@ async def plant_disease(plant: str) -> FileResponse:
     return FileResponse(plant_disease_path)
 
 @app.get("/plant-details")
-async def plant_details() -> FileResponse:
+async def plant_details(id: int = Query(...), plant: str = Query(...), disease: str = Query(...), image_path: str = Query(...)) -> FileResponse:
     plant_details_path = os.path.join(frontend_path, f"plant-details.html")
     return FileResponse(plant_details_path)
 
