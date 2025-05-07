@@ -67,7 +67,7 @@ async def handbook(id: int = Query(...)) -> FileResponse:
     return FileResponse(handbook_path)
 
 @app.get("/plant-disease")
-async def plant_disease(plant: str) -> FileResponse:
+async def plant_disease(id: int = Query (...), plant: str = Query(...)) -> FileResponse:
     plant_disease_path = os.path.join(frontend_path, f"plant-diseases.html")
     return FileResponse(plant_disease_path)
 
@@ -166,6 +166,53 @@ async def analyze_plant(file: UploadFile = File(...)):
     except Exception as e:
         print(f"Error analyzing plant: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/update-user")
+async def update_user(
+    id: Annotated[int, Form()],
+    firstName: Annotated[str, Form()] = "",
+    lastName: Annotated[str, Form()] = "",
+    email: Annotated[str, Form()] = "",
+    password: Annotated[str, Form()] = "",
+    contactNumber: Annotated[str, Form()] = None
+):
+    try:
+        # Check if user exists
+        user = db.get_user_by_id(id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # If email is being changed, validate it doesn't already exist
+        if email and email != user.email:
+            if not db.validate_email(email):
+                raise HTTPException(status_code=400, detail="Email already registered to another user")
+        
+        # Update the user information
+        db.modify_user(
+            user_id=id,
+            new_email=email if email else user.email,
+            new_password=password if password else user.password,
+            new_first_name=firstName if firstName else user.first_name,
+            new_last_name=lastName if lastName else user.last_name,
+            new_contact_number=contactNumber if contactNumber is not None else user.contact_number
+        )
+        
+        # Get updated user information
+        updated_user = db.get_user_by_id(id)
+        
+        return {
+            "id": updated_user.id,
+            "email": updated_user.email,
+            "first_name": updated_user.first_name,
+            "last_name": updated_user.last_name,
+            "contact_number": updated_user.contact_number,
+            "message": "User information updated successfully"
+        }
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        print(f"User update error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error during user update: {str(e)}")
 
 @app.post("/api/get-plant-disease")
 async def get_plant_disease(disease: str = Query(...)):

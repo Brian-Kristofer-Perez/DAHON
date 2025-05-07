@@ -84,24 +84,109 @@ avatarUpload.addEventListener('change', (e) => {
 });
 
 // Form submission handlers
-document.getElementById('profileForm').addEventListener('submit', (e) => {
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    // Add profile update logic here
-    showToast('Profile updated successfully!');
+    
+    try {
+        // Get form data
+        const formData = new FormData(e.target);
+        
+        // Add user ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+        formData.set('id', userId);
+        
+        // Make API request
+        const response = await fetch('/api/update-user', {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Parse the response JSON only once
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.detail || 'Failed to update profile');
+        }
+        
+        // Update UI with new data
+        populateUserData(result);
+        
+        // Show success message
+        showToast('Profile updated successfully!');
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        // Fix for [object Object] error - extract message properly
+        const errorMessage = error.message || 'Failed to update profile';
+        showToast(errorMessage, 'error');
+    }
 });
 
-document.getElementById('passwordForm').addEventListener('submit', (e) => {
+document.getElementById('passwordForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (newPassword !== confirmPassword) {
-        showToast('Passwords do not match!', 'error');
-        return;
+    
+    try {
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const currentPassword = document.getElementById('currentPassword').value;
+    
+        if (newPassword !== confirmPassword) {
+            showToast('Passwords do not match!', 'error');
+            return;
+        }
+        
+        // Validate password requirements
+        for (const [requirement, validateFunc] of Object.entries(requirements)) {
+            if (!validateFunc(newPassword)) {
+                showToast('New password does not meet all requirements', 'error');
+                return;
+            }
+        }
+        
+        // Create form data for the API request
+        const formData = new FormData();
+        
+        // Add user ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+        formData.append('id', userId);
+        
+        // Add password to form data
+        formData.append('password', newPassword);
+        
+        // Make API request
+        const response = await fetch('/api/update-user', {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Parse the response JSON only once
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.detail || 'Failed to update password');
+        }
+        
+        // Clear password fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        
+        // Reset the password requirement indicators
+        document.querySelectorAll('.password-requirements li').forEach(li => {
+            li.classList.remove('valid');
+            const icon = li.querySelector('i');
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-circle');
+        });
+        
+        // Show success message
+        showToast('Password updated successfully!');
+    } catch (error) {
+        console.error('Error updating password:', error);
+        const errorMessage = error.message || 'Failed to update password';
+        showToast(errorMessage, 'error');
     }
-
-    // Add password update logic here
-    showToast('Password updated successfully!');
 });
 
 // notification
@@ -152,6 +237,11 @@ async function fetchUserAccoundData() {
 function populateUserData(userData) {
     if (!userData) return;
 
+    // Set the user ID in the hidden input
+    if (document.getElementById('userId')) {
+        document.getElementById('userId').value = userData.id || '';
+    }
+
     // Example of how to populate fields (adjust based on your actual form fields)
     if (document.getElementById('username')) {
         document.getElementById('username').value = userData.first_name || '';
@@ -169,10 +259,33 @@ function populateUserData(userData) {
         document.getElementById('lastName').value = userData.last_name || '';
     }
 
-    if (document.getElementById('email') || document.getElementById('emailAddress')) {
+    if (document.getElementById('email')) {
         document.getElementById('email').value = userData.email || '';
-        document.getElementById('emailAddress').textContent = userData.email;
+    }
+    
+    if (document.getElementById('emailAddress')) {
+        document.getElementById('emailAddress').textContent = userData.email || '';
     }
 
-    // Add more fields as needed
+    if (document.getElementById('contactNumber')) {
+        document.getElementById('contactNumber').value = userData.contact_number || '';
+    }
+
+    // Update sidebar menu links with user ID
+    updateSidebarLinks(userData.id);
+}
+
+// Update sidebar links with user ID
+function updateSidebarLinks(userId) {
+    if (!userId) return;
+    
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu-item');
+    sidebarLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        // Only update links that have query parameters
+        if (href.includes('?')) {
+            const baseUrl = href.split('?')[0];
+            link.setAttribute('href', `${baseUrl}?id=${userId}`);
+        }
+    });
 }
