@@ -225,7 +225,7 @@ async def get_plant_disease(disease: str = Query(...)):
         return {
             "name": details.name,
             "species": details.species_affected,
-            "symptoms": details.symptoms,
+            "symptom": details.symptoms,
             "cause": details.cause,
             "treatment": details.treatment,
             "prevention": details.prevention,
