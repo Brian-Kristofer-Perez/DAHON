@@ -2,18 +2,18 @@ import sqlalchemy.orm
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import os
 
-# change these to your own local database info!
-# In future projects, let's use environment variables
-# because hardcoding this is a mortal sin
 
-# this is why i suggested we use docker
-user = "root"
-password = ""
-port = "3306"
-database_name = "DahonDB"
+user = "avnadmin"
+password = os.getenv("DB_PASSWORD")
+port = "14893"
+database_name = "defaultdb"
+database_address = "mysql-a014630-project-159c.d.aivencloud.com"
 
-engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@127.0.0.1:{port}/{database_name}")
+engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{database_address}:{port}/{database_name}")
 
 Base = sqlalchemy.orm.declarative_base()
 SessionLocal = sessionmaker(bind=engine)
+
+
