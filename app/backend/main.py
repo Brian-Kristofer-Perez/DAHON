@@ -248,6 +248,7 @@ async def get_user_id(id: int = Query(...)):
             "email": user.email,
             "first_name": user.first_name,
             "last_name": user.last_name,
+            "contact_number": user.contact_number,
         }
     except Exception as e:
         print(f"Error fetching user ID: {str(e)}")

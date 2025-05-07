@@ -112,6 +112,9 @@ document.getElementById('profileForm').addEventListener('submit', async (e) => {
         // Update UI with new data
         populateUserData(result);
         
+        // Refresh the page
+        location.reload();
+
         // Show success message
         showToast('Profile updated successfully!');
     } catch (error) {
