@@ -97,7 +97,6 @@ class Database:
                 first_name= new_first_name,
                 last_name= new_last_name,
                 contact_number = new_contact_number,
-                profile_picture = new_profile_picture
             )
 
             session.execute(statement)
