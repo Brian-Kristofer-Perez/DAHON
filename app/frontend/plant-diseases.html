@@ -274,8 +274,8 @@
                     if (disease.images && disease.images.length > 0) {
                         // Use base64 image data if available
                         const firstImage = disease.images[0];
-                        if (firstImage.image_data && firstImage.mime_type) {
-                            imageUrl = `data:${firstImage.mime_type};base64,${firstImage.image_data}`;
+                        if (firstImage.image && firstImage.mime_type) {
+                            imageUrl = `data:${firstImage.mime_type};base64,${firstImage.image}`;
                         }
                     }
                     
