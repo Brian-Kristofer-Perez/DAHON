@@ -89,14 +89,16 @@ class Database:
             return user_dict  # Return a dictionary instead of the SQLAlchemy object
 
 
-    def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = '', new_profile_picture: bytes = None):
+    def modify_user(self, user_id, new_email= '', new_password= '', new_first_name = '', new_last_name = '', new_contact_number = '', new_profile_picture: bytes = None, new_profile_picture_mime: str = ""):
         with Session() as session:
             statement = Update(Models.User).where(Models.User.id == user_id).values(
                 email= new_email,
-                password= new_password,  # Fixed: corrected typo from "passworld" to "password"
+                password= new_password,
                 first_name= new_first_name,
                 last_name= new_last_name,
                 contact_number = new_contact_number,
+                profile_picture = new_profile_picture,
+                profile_picture_mime = new_profile_picture_mime
             )
 
             session.execute(statement)
