@@ -1,4 +1,4 @@
-        // For demo only guyss  -Joel
+// For demo only guyss  -Joel
         // yeah for sure        -Noel
         document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM Content Loaded - Starting to display results');
@@ -76,10 +76,15 @@
                             });
 
                             console.log('Decoded images:', decodedImages);
+
+                            
                     
                             // Map API response to analysisResult structure
                             const analysisResult = {
-                                plant: data.name || 'Unknown Plant',
+                                plant: data.name ? data.name.split(' ').map(word => {
+                                    // Handle words with special characters
+                                    return word.charAt(0).toUpperCase() + word.slice(1);
+                                }).join(' ') : 'Unknown Plant',
                                 scientificName: data.species.map(species => species.species).join(', ') || 'Unknown Species',
                                 symptoms: data.symptom.map(symptom => symptom.symptom) || ['No symptoms available'],
                                 cause: data.cause || 'Unknown cause',
