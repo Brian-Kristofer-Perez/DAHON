@@ -258,7 +258,7 @@
         // Update page content based on plant
         function updatePageContent() {
             const plantName = plantParam.charAt(0).toLowerCase() + plantParam.slice(1);
-            document.getElementById('plantName').textContent = plantName;
+            document.getElementById('plantName').textContent = plantName.toUpperCase();
             document.getElementById('plantDescription').textContent = `Common diseases affecting ${plantName} plants`;
 
             // Create disease cards
