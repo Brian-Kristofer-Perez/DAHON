@@ -81,7 +81,7 @@
                             const analysisResult = {
                                 plant: data.name || 'Unknown Plant',
                                 scientificName: data.species.map(species => species.species).join(', ') || 'Unknown Species',
-                                symptoms: data.symptoms.map(symptom => symptom.symptom) || ['No symptoms available'],
+                                symptoms: data.symptom.map(symptom => symptom.symptom) || ['No symptoms available'],
                                 cause: data.cause || 'Unknown cause',
                                 treatment: data.treatment.map(treatment => treatment.treatment) || ['No treatment available'],
                                 prevention: data.prevention.map(prevention => prevention.prevention) || ['No prevention methods available'],
