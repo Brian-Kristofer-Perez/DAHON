@@ -77,7 +77,6 @@
 
                             console.log('Decoded images:', decodedImages);
 
-                            
                     
                             // Map API response to analysisResult structure
                             const analysisResult = {
@@ -108,7 +107,7 @@
                     console.log('Updating UI with:', result);
 
                     // Update basic information
-                    document.getElementById('diseaseName').textContent = result.disease;
+                    document.getElementById('diseaseName').textContent = result.plant;
                     document.getElementById('scientificName').textContent = result.scientificName || result.plant;
                     document.getElementById('analysisTime').textContent = new Date(result.timestamp).toLocaleString();
 
