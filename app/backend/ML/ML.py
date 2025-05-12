@@ -23,15 +23,16 @@ class MLModel:
                                     - Apple: Black Rot
                                     - Apple: Cedar Apple Rust
                                     - Cherry (including sour): Powdery Mildew
-                                    - Corn (maize): Cercospora Leaf Spot (Gray Leaf Spot)
+                                    - Corn (maize): Gray Leaf Spot
                                     - Corn (maize): Common Rust
                                     - Corn (maize): Northern Corn Leaf Blight
                                     - Grape: Black Rot
                                     - Grape: Esca (Black Measles)
-                                    - Grape: Leaf Blight (Isariopsis Leaf Spot)
+                                    - Grape: Leaf Blight
                                     - Orange: Haunglongbing (Citrus greening)
                                     - Peach: Bacterial Spot
                                     - Bell Pepper: Bacterial Spot
+                                    - Bell Pepper: Phytophthora Blight
                                     - Potato: Early Blight
                                     - Potato: Late Blight
                                     - Squash: Powdery Mildew
@@ -52,7 +53,7 @@ class MLModel:
                                     
                                     For example:
                                     {"plant": "Tomato", "disease": "Tomato: Tomato Yellow Leaf Curl Virus"}
-                                    {"plant": "Squash". "disease": "Powdery Mildew"}
+                                    {"plant": "Squash". "disease": "Squash: Powdery Mildew"}
                                     """
 
         self.plant_response_schema = {"type": "string", "description": "The identified plant name"}
