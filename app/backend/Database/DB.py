@@ -4,11 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 
-user = "avnadmin"
+user = os.getenv("DB_USER")
 password = os.getenv("DB_PASSWORD")
-port = "14893"
-database_name = "defaultdb"
-database_address = "mysql-a014630-project-159c.d.aivencloud.com"
+port = os.getenv("DB_PORT")
+database_name = os.getenv("DB_NAME")
+database_address = os.getenv("DB_ADDRESS")
 
 engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{database_address}:{port}/{database_name}")
 
