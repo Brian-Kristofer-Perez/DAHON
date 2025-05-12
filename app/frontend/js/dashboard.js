@@ -10,14 +10,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== Accessibility Enhancements =====
   enhanceAccessibility()
-
   // Update welcome message with user's name
   const welcomeUserName = document.getElementById('welcomeUserName');
   const sidebarUserName = document.querySelector('.sidebar-user-name');
-
-  // Get user name from sidebar and update welcome message
-  if (sidebarUserName && welcomeUserName) {
-    welcomeUserName.textContent = sidebarUserName.textContent;
+  
+  // Create a function to sync the username between sidebar and welcome message
+  function syncUserName() {
+    if (sidebarUserName && welcomeUserName) {
+      welcomeUserName.textContent = sidebarUserName.textContent;
+    }
+  }
+  
+  // Initial sync
+  syncUserName();
+  
+  // Set up a MutationObserver to detect changes to the sidebar username
+  if (sidebarUserName) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'childList' || 
+            mutation.type === 'characterData' || 
+            mutation.target.nodeType === Node.TEXT_NODE) {
+          syncUserName();
+        }
+      });
+    });
+    
+    observer.observe(sidebarUserName, { 
+      childList: true,
+      characterData: true,
+      subtree: true 
+    });
+    
+    // Also manually call syncUserName when the DOM is fully loaded,
+    // in case the sidebar name was updated before our observer was attached
+    window.addEventListener('load', syncUserName);
   }
 
   // Update health meter animation
