@@ -338,10 +338,6 @@ async function initRecentScans() {
             <p class="disease-name">${scan.disease}</p>
             <div class="scan-meta">
               <span class="scan-date">${formattedDate}</span>
-              <span class="confidence">
-                <span class="confidence-label">Confidence:</span>
-                <span class="confidence-value">${scan.confidence}%</span>
-              </span>
             </div>
             <button class="btn btn-view-details">View Details</button>
           </div>
