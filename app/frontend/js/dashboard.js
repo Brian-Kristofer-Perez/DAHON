@@ -321,25 +321,26 @@ async function initRecentScans() {
         
         const scanCard = document.createElement('div')
         scanCard.className = 'scan-card'
-        scanCard.setAttribute('data-plant', scan.plantName)
-        scanCard.setAttribute('data-disease', scan.disease)
-        scanCard.setAttribute('data-status', scan.status)
-        scanCard.setAttribute('data-date', scan.date)
-        scanCard.setAttribute('tabindex', '0')
-        scanCard.setAttribute('aria-label', `Scan of ${scan.plantName} - Status: ${scan.status === "healthy" ? "Healthy" : scan.disease}`)
+        // scanCard.setAttribute('data-plant', scan.plantName)
+        // scanCard.setAttribute('data-disease', scan.disease)
+        // scanCard.setAttribute('data-status', scan.status)
+        // scanCard.setAttribute('data-date', scan.date)
+        // scanCard.setAttribute('tabindex', '0')
+        // scanCard.setAttribute('aria-label', `Scan of ${scan.plantName} - Status: ${scan.status === "healthy" ? "Healthy" : scan.disease}`)
         
+        console.log("scanstatus", scan.status)
         scanCard.innerHTML = `
           <div class="scan-image">
             <img src="${scan.image}" alt="${scan.plantName} - ${scan.disease}">
-            <div class="status-indicator ${scan.status}"></div>
+            <div class="scan-status status-badge status-${scan.status}">${scan.status}</div>
           </div>
-          <div class="scan-card-content">
-            <h3 class="plant-name">${scan.plantName}</h3>
-            <p class="disease-name">${scan.disease}</p>
+          <div class="scan-content">
+            <h3 class="scan-title">${scan.plantName}</h3>
+            <p class="scan-description">${scan.disease}</p>
             <div class="scan-meta">
               <span class="scan-date">${formattedDate}</span>
             </div>
-            <button class="btn btn-view-details">View Details</button>
+            <button class="btn-view-details scan-description">View Details</button>
           </div>
         `
         
