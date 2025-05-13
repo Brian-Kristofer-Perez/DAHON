@@ -72,7 +72,7 @@ async def plant_disease(id: int = Query (...), plant: str = Query(...)) -> FileR
     return FileResponse(plant_disease_path)
 
 @app.get("/plant-details")
-async def plant_details(id: int = Query(...), plant: str = Query(...), disease: str = Query(...), image_path: str = Query(...)) -> FileResponse:
+async def plant_details(id: int = Query(...), scan_id = Query) -> FileResponse:
     plant_details_path = os.path.join(frontend_path, f"plant-details.html")
     return FileResponse(plant_details_path)
 
@@ -135,17 +135,15 @@ async def login_user(
         raise HTTPException(status_code=500, detail="Internal server error during login")
 
 @app.post("/api/analyze-plant")
-async def analyze_plant(file: UploadFile = File(...)):
+async def analyze_plant(file: UploadFile = File(...), user_id: int = Form(...)):
     try:
-        # Generate unique filename
+        print(f"Received request with user_id: {user_id} and file: {file.filename}")
+        
+        # Generate meaningful filename based on plant, disease and timestamp
         file_extension = file.filename.split(".")[-1]
-        unique_filename = f"{uuid.uuid4()}.{file_extension}"
-        file_path = os.path.join(upload_path, unique_filename)
         
         # First, save the uploaded file
         contents = await file.read()
-        with open(file_path, "wb") as f:
-            f.write(contents)
         
         # Now create BytesIO object from the contents
         image = BytesIO(contents)
@@ -158,10 +156,39 @@ async def analyze_plant(file: UploadFile = File(...)):
         
         print(f"Predicted Plant: {plant}, Predicted Disease: {disease}")
         
+        # Get plant and disease objects from database
+        plant_obj = db.query_plant(plant)
+        disease_obj = db.query_disease(disease)
+        
+        if not plant_obj or not disease_obj:
+            raise HTTPException(status_code=404, detail="Plant or disease not found in database")
+        
+        # Create a meaningful filename
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        sanitized_plant = plant.replace(" ", "_").lower()
+        sanitized_disease = disease.replace(" ", "_").lower()
+        filename = f"{sanitized_plant}_{sanitized_disease}_{timestamp}.{file_extension}"
+        file_path = os.path.join(upload_path, filename)
+        
+        # Save file with the new filename
+        with open(file_path, "wb") as f:
+            # Reset the BytesIO object to the beginning
+            image.seek(0)
+            f.write(image.getvalue())
+        
+        # Save scan to database
+        scan_date = datetime.now()
+        scan_id = db.add_scan(
+            userID=user_id,
+            image=image,
+            date=scan_date,
+            plant=plant_obj,
+            disease=disease_obj,
+            filetype=file_extension
+        )
+        
         return {
-            "plant": plant,
-            "disease": disease,
-            "image_path": f"/uploads/{unique_filename}",
+            "scan_id": scan_id
         }
     except Exception as e:
         print(f"Error analyzing plant: {str(e)}")
@@ -253,3 +280,58 @@ async def get_user_id(id: int = Query(...)):
     except Exception as e:
         print(f"Error fetching user ID: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/get-recent-scans")
+async def get_recent_scans(user_id: int = Query(...), limit: int = Query(5)):
+    try:
+        # Validate user exists
+        user = db.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Get scans for the user as dictionaries
+        scan_dicts = db.query_scans(user_id)
+        
+        # Sort by date (most recent first) and limit the results
+        recent_scans = sorted(scan_dicts, key=lambda x: x["date"], reverse=True)[:limit]
+        
+        # Format the scan results
+        scan_results = []
+        for scan in recent_scans:
+            scan_results.append({
+                "id": scan["id"],
+                "date": scan["date"],
+                "plant": scan["plant"],
+                "disease": scan["disease"],
+                "image": f"data:{scan['mime_type']};base64,{scan['image']}"
+            })
+        
+        return {
+            "scans": scan_results,
+            "count": len(scan_results)
+        }
+    except Exception as e:
+        print(f"Error fetching recent scans: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/get-scan")
+async def get_scan(scan_id: int = Query(...)):
+    try:
+        scan = db.get_scan_by_id(scan_id)
+        if not scan:
+            raise HTTPException(status_code=404, detail="Scan not found")
+        
+        return {
+            "id": scan["id"],
+            "date": scan["date"],
+            "plant": scan["plant"],
+            "disease": scan["disease"],
+            "image": f"data:{scan['mime_type']};base64,{scan['image']}",
+            "user_id": scan["user_id"]
+        }
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        print(f"Error fetching scan: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error while fetching scan: {str(e)}")
+
