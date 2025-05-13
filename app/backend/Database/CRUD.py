@@ -1,4 +1,4 @@
-import io, datetime, sqlalchemy
+import io, datetime, sqlalchemy, base64
 from sqlalchemy import Select, Update
 from sqlalchemy.orm import selectinload
 from . import Models
@@ -27,20 +27,29 @@ class Database:
             statement = Select(Models.User).where(Models.User.email == email)
             output = session.scalars(statement).first()
             return output is None  # Fixed: Return True if email doesn't exist
-
-
     # query all scans made by user, returns array of scan objects.
-    def query_scans(self, userID: int) -> list[Models.Scan]:
+    def query_scans(self, userID: int) -> list[dict]:
         with Session() as session:
             statement = Select(Models.Scan).options(
                 selectinload(Models.Scan.predicted_disease),
                         selectinload(Models.Scan.predicted_plant)
                         ).where(Models.Scan.userID == userID).order_by(Models.Scan.date)
-            output = session.scalars(statement)
-        scans = []
-        for scan in output:
-            scans.append(scan)
-        return scans
+            output = session.scalars(statement).all()
+            
+            # Convert to dictionaries inside the session
+            scan_dicts = []
+            for scan in output:
+                scan_dict = {
+                    "id": scan.id,
+                    "date": scan.date.isoformat(),
+                    "image": base64.b64encode(scan.image).decode('utf-8'),
+                    "mime_type": scan.mime_type,
+                    "plant": scan.predicted_plant.common_name,
+                    "disease": scan.predicted_disease.name
+                }
+                scan_dicts.append(scan_dict)
+            
+        return scan_dicts
 
 
     def query_plant(self, plant: str) -> Models.Plant:
@@ -118,6 +127,8 @@ class Database:
                                mime_type = f"image/{filetype.lower()}")
             session.add(scan)
             session.commit()
+            session.refresh(scan) # Ensure the scan object has the ID
+            return scan.id # Return the ID of the newly created scan
 
     def get_user_by_id(self, user_id: int) -> Models.User:
         """
@@ -134,6 +145,27 @@ class Database:
             output = session.scalars(statement).first()
         
             return output
+
+    def get_scan_by_id(self, scan_id: int) -> dict | None:
+        with Session() as session:
+            statement = Select(Models.Scan).options(
+                selectinload(Models.Scan.predicted_disease),
+                selectinload(Models.Scan.predicted_plant)
+            ).where(Models.Scan.id == scan_id)
+            scan = session.scalars(statement).first()
+
+            if scan:
+                scan_dict = {
+                    "id": scan.id,
+                    "date": scan.date.isoformat(),
+                    "image": base64.b64encode(scan.image).decode('utf-8'),
+                    "mime_type": scan.mime_type,
+                    "plant": scan.predicted_plant.common_name,
+                    "disease": scan.predicted_disease.name,
+                    "user_id": scan.userID
+                }
+                return scan_dict
+            return None
 
 
 
