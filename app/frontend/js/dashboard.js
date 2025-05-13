@@ -181,110 +181,418 @@ function setDefaultUserData() {
   }
 }
 
-// Replace the entire initRecentScans function with this simplified version
 /**
- * Initialize recent scans section with navigation
+ * Initialize recent scans section with navigation using real API data
  */
-function initRecentScans() {
-  // Mock scan data for demonstration
-  const mockScans = [
-    {
-      id: 1,
-      plantName: "Tomato Plant",
-      status: "healthy",
-      disease: "Healthy",
-      description: "Healthy plant with no signs of disease",
-      image: "assets/plant/tomato.jpg",
-      date: "2023-06-15T10:30:00Z",
-      confidence: 98,
-      location: "Home Garden",
-    },
-    {
-      id: 2,
-      plantName: "Potato Plant",
-      status: "unhealthy",
-      disease: "Late Blight",
-      description: "Late Blight detected - requires immediate treatment",
-      image: "assets/plant/potato.jpg",
-      date: "2023-06-14T14:45:00Z",
-      confidence: 95,
-      location: "Home Garden",
-    },
-    {
-      id: 3,
-      plantName: "Tomato Plant",
-      status: "healthy",
-      disease: "Healthy",
-      description: "Healthy plant with no signs of disease",
-      image: "assets/plant/tomato.jpg",
-      date: "2023-06-13T09:15:00Z",
-      confidence: 97,
-      location: "Backyard",
-    },
-    {
-      id: 4,
-      plantName: "Apple Tree",
-      status: "warning",
-      disease: "Powdery Mildew",
-      description: "Powdery Mildew detected - early stage",
-      image: "assets/plant/apple.jpg",
-      date: "2023-06-12T16:20:00Z",
-      confidence: 89,
-      location: "Orchard",
-    },
-  ]
+async function initRecentScans() {
+  // Show loading state
+  const scanContainer = document.querySelector(".recent-scans-grid")
+  if (scanContainer) {
+    scanContainer.innerHTML = '<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> Loading recent scans...</div>'
+  }
 
-  // Get all scan cards
-  const scanCards = document.querySelectorAll(".scan-card")
+  try {
+    // Get user ID from URL parameter
+    const urlParams = new URLSearchParams(window.location.search)
+    const userId = urlParams.get('id')
+    
+    if (!userId) {
+      throw new Error("User ID not found in URL parameters")
+    }
 
-  // Add click event to each card
-  scanCards.forEach((card, index) => {
-    // Get the corresponding scan data
-    const scanData = mockScans[index % mockScans.length]
-
-    // Make the entire card clickable
-    card.style.cursor = "pointer"
-
-    // Add click event to the entire card
-    card.addEventListener("click", (e) => {
-      // Don't navigate if clicking on a button or link
-      if (
-        e.target.tagName === "BUTTON" ||
-        e.target.tagName === "A" ||
-        e.target.closest("button") ||
-        e.target.closest("a")
-      ) {
-        return
+    // Fetch recent scans from API
+    const response = await fetch(`/api/get-recent-scans?user_id=${userId}&limit=8`)
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`)
+    }
+    
+    const data = await response.json()
+    
+    if (!data.scans || data.scans.length === 0) {
+      if (scanContainer) {
+        scanContainer.innerHTML = '<div class="no-scans-message">No recent scans found. Start scanning your plants to see them here.</div>'
       }
-
-      // Navigate to scan details
-      goToScanDetails(scanData)
+      return
+    }
+    
+    // Process API data into format our UI needs
+    const scans = data.scans.map(scan => {
+      // Determine status based on disease
+      let status = "healthy"
+      if (scan.disease && scan.disease.toLowerCase() !== "healthy") {
+        status = scan.disease.toLowerCase().includes("blight") || 
+                scan.disease.toLowerCase().includes("rot") ? 
+                "unhealthy" : "warning"
+      }
+      
+      return {
+        id: scan.id,
+        plantName: scan.plant,
+        status: status,
+        disease: scan.disease,
+        description: `${scan.disease} ${status === "healthy" ? "- No treatment needed" : "- Check treatment options"}`,
+        image: scan.image, // The API already returns base64 encoded image
+        date: scan.date,
+        confidence: 95, // Placeholder as API doesn't return confidence
+        location: "Garden" // Placeholder as API doesn't return location
+      }
     })
-
-    // Also make the "View Details" button work
-    const viewDetailsBtn = card.querySelector(".btn-view-details")
-    if (viewDetailsBtn) {
-      viewDetailsBtn.addEventListener("click", (e) => {
-        e.stopPropagation() // Prevent triggering the card's click event
-        goToScanDetails(scanData)
+    
+    // Get all scan cards
+    const scanCards = document.querySelectorAll(".scan-card")
+    
+    // If we have existing scan cards in the HTML, update them
+    if (scanCards.length > 0) {
+      scanCards.forEach((card, index) => {
+        // Get the corresponding scan data or use first scan if index out of bounds
+        const scanData = index < scans.length ? scans[index] : scans[0]
+        
+        // Update card data attributes
+        card.setAttribute("data-plant", scanData.plantName)
+        card.setAttribute("data-disease", scanData.disease)
+        card.setAttribute("data-status", scanData.status)
+        card.setAttribute("data-date", scanData.date)
+        
+        // Update card content
+        const plantNameEl = card.querySelector(".plant-name")
+        if (plantNameEl) plantNameEl.textContent = scanData.plantName
+        
+        const diseaseNameEl = card.querySelector(".disease-name")
+        if (diseaseNameEl) diseaseNameEl.textContent = scanData.disease
+        
+        const dateEl = card.querySelector(".scan-date")
+        if (dateEl) {
+          const scanDate = new Date(scanData.date)
+          dateEl.textContent = scanDate.toLocaleDateString()
+        }
+        
+        const confidenceEl = card.querySelector(".confidence-value")
+        if (confidenceEl) confidenceEl.textContent = `${scanData.confidence}%`
+        
+        const statusIndicator = card.querySelector(".status-indicator")
+        if (statusIndicator) {
+          statusIndicator.className = `status-indicator ${scanData.status}`
+        }
+        
+        const cardImage = card.querySelector(".scan-card-image img")
+        if (cardImage && scanData.image) {
+          cardImage.src = scanData.image
+          cardImage.alt = `${scanData.plantName} - ${scanData.disease}`
+        }
+        
+        // Make the entire card clickable
+        card.style.cursor = "pointer"
+        
+        // Add click event to the entire card
+        card.addEventListener("click", (e) => {
+          // Don't navigate if clicking on a button or link
+          if (
+            e.target.tagName === "BUTTON" ||
+            e.target.tagName === "A" ||
+            e.target.closest("button") ||
+            e.target.closest("a")
+          ) {
+            return
+          }
+          
+          // Navigate to scan details
+          goToScanDetails(scanData)
+        })
+        
+        // Also make the "View Details" button work
+        const viewDetailsBtn = card.querySelector(".btn-view-details")
+        if (viewDetailsBtn) {
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation() // Prevent triggering the card's click event
+            goToScanDetails(scanData)
+          })
+        }
+      })
+    } else if (scanContainer) {
+      // If no cards exist in the DOM, create them from API data
+      scanContainer.innerHTML = '' // Clear loading indicator
+      
+      console.log("scans", scans)
+      // Create cards for each scan
+      scans.forEach(scan => {
+        const scanDate = new Date(scan.date)
+        const formattedDate = scanDate.toLocaleDateString()
+        
+        const scanCard = document.createElement('div')
+        scanCard.className = 'scan-card'
+        scanCard.setAttribute('data-plant', scan.plantName)
+        scanCard.setAttribute('data-disease', scan.disease)
+        scanCard.setAttribute('data-status', scan.status)
+        scanCard.setAttribute('data-date', scan.date)
+        scanCard.setAttribute('tabindex', '0')
+        scanCard.setAttribute('aria-label', `Scan of ${scan.plantName} - Status: ${scan.status === "healthy" ? "Healthy" : scan.disease}`)
+        
+        scanCard.innerHTML = `
+          <div class="scan-image">
+            <img src="${scan.image}" alt="${scan.plantName} - ${scan.disease}">
+            <div class="status-indicator ${scan.status}"></div>
+          </div>
+          <div class="scan-card-content">
+            <h3 class="plant-name">${scan.plantName}</h3>
+            <p class="disease-name">${scan.disease}</p>
+            <div class="scan-meta">
+              <span class="scan-date">${formattedDate}</span>
+              <span class="confidence">
+                <span class="confidence-label">Confidence:</span>
+                <span class="confidence-value">${scan.confidence}%</span>
+              </span>
+            </div>
+            <button class="btn btn-view-details">View Details</button>
+          </div>
+        `
+        
+        scanContainer.appendChild(scanCard)
+        
+        // Make the entire card clickable
+        scanCard.style.cursor = "pointer"
+        
+        // Add click event to the entire card
+        scanCard.addEventListener("click", (e) => {
+          if (
+            e.target.tagName === "BUTTON" ||
+            e.target.tagName === "A" ||
+            e.target.closest("button") ||
+            e.target.closest("a")
+          ) {
+            return
+          }
+          
+          // Navigate to scan details
+          goToScanDetails(scan)
+        })
+        
+        // Also make the "View Details" button work
+        const viewDetailsBtn = scanCard.querySelector(".btn-view-details")
+        if (viewDetailsBtn) {
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation() // Prevent triggering the card's click event
+            goToScanDetails(scan)
+          })
+        }
       })
     }
-  })
-
-  // Simple function to navigate to scan details
+    
+    // Enhance scan cards with hover effects
+    const allCards = document.querySelectorAll('.scan-card')
+    allCards.forEach(card => {
+      card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-10px)'
+      })
+      
+      card.addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0)'
+      })
+    })
+    
+  } catch (error) {
+    console.error("Error fetching recent scans:", error)
+    showNotification("Failed to load recent scans. Using demo data instead.", "error")
+    
+    // If API call fails, fall back to mock data
+    useMockDataFallback()
+  }
+    // Simple function to navigate to scan details using proper routing
   function goToScanDetails(scanData) {
     try {
       console.log(`Navigating to scan details for ${scanData.plantName} with ${scanData.disease}`)
-
-      // Store data in localStorage for retrieval on details page
-      localStorage.setItem("scanData", JSON.stringify(scanData))
-
-      // Navigate immediately
-      window.location.href = "scan-details.html"
+      
+      // Get user ID from URL parameter
+      const urlParams = new URLSearchParams(window.location.search)
+      const userId = urlParams.get('id')
+      
+      if (!userId) {
+        throw new Error("User ID not found in URL parameters")
+      }
+      
+      // Navigate to plant-details route with both user ID and scan ID as URL parameters
+      window.location.href = `/plant-details?id=${userId}&scan_id=${scanData.id}`
     } catch (error) {
       console.error("Navigation error:", error)
-      // Force navigation even if storage fails
-      window.location.href = "scan-details.html"
+      
+      // If there's an error with parameters, fall back to localStorage approach
+      try {
+        localStorage.setItem("scanData", JSON.stringify(scanData))
+        window.location.href = "scan-details.html"
+      } catch (fallbackError) {
+        // If even localStorage fails, just navigate to scan-details page
+        console.error("Fallback navigation error:", fallbackError)
+        window.location.href = "scan-details.html"
+      }
+    }
+  }
+  
+  // Fallback to mock data if API fails
+  function useMockDataFallback() {
+    // Mock scan data for demonstration
+    const mockScans = [
+      {
+        id: 1,
+        plantName: "Tomato Plant",
+        status: "healthy",
+        disease: "Healthy",
+        description: "Healthy plant with no signs of disease",
+        image: "assets/plant/tomato.jpg",
+        date: "2023-06-15T10:30:00Z",
+        confidence: 98,
+        location: "Home Garden",
+      },
+      {
+        id: 2,
+        plantName: "Potato Plant",
+        status: "unhealthy",
+        disease: "Late Blight",
+        description: "Late Blight detected - requires immediate treatment",
+        image: "assets/plant/potato.jpg",
+        date: "2023-06-14T14:45:00Z",
+        confidence: 95,
+        location: "Home Garden",
+      },
+      {
+        id: 3,
+        plantName: "Tomato Plant",
+        status: "healthy",
+        disease: "Healthy",
+        description: "Healthy plant with no signs of disease",
+        image: "assets/plant/tomato.jpg",
+        date: "2023-06-13T09:15:00Z",
+        confidence: 97,
+        location: "Backyard",
+      },
+      {
+        id: 4,
+        plantName: "Apple Tree",
+        status: "warning",
+        disease: "Powdery Mildew",
+        description: "Powdery Mildew detected - early stage",
+        image: "assets/plant/apple.jpg",
+        date: "2023-06-12T16:20:00Z",
+        confidence: 89,
+        location: "Orchard",
+      },
+    ]
+    
+    // Get container
+    const scanContainer = document.querySelector(".recent-scans-grid")
+    
+    // Clear loading message if it exists
+    if (scanContainer) {
+      scanContainer.innerHTML = ''
+    }
+    
+    // Get all scan cards
+    const scanCards = document.querySelectorAll(".scan-card")
+    
+    // If we have existing cards, update them
+    if (scanCards.length > 0) {
+      scanCards.forEach((card, index) => {
+        const scanData = mockScans[index % mockScans.length]
+        
+        // Update card data
+        card.setAttribute("data-plant", scanData.plantName)
+        card.setAttribute("data-disease", scanData.disease)
+        card.setAttribute("data-status", scanData.status)
+        card.setAttribute("data-date", scanData.date)
+        
+        const plantNameEl = card.querySelector(".plant-name")
+        if (plantNameEl) plantNameEl.textContent = scanData.plantName
+        
+        const diseaseNameEl = card.querySelector(".disease-name")
+        if (diseaseNameEl) diseaseNameEl.textContent = scanData.disease
+        
+        const dateEl = card.querySelector(".scan-date")
+        if (dateEl) {
+          const scanDate = new Date(scanData.date)
+          dateEl.textContent = scanDate.toLocaleDateString()
+        }
+        
+        // Make the entire card clickable
+        card.style.cursor = "pointer"
+        
+        // Add click event
+        card.addEventListener("click", (e) => {
+          if (
+            e.target.tagName === "BUTTON" ||
+            e.target.tagName === "A" ||
+            e.target.closest("button") ||
+            e.target.closest("a")
+          ) {
+            return
+          }
+          goToScanDetails(scanData)
+        })
+        
+        const viewDetailsBtn = card.querySelector(".btn-view-details")
+        if (viewDetailsBtn) {
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation()
+            goToScanDetails(scanData)
+          })
+        }
+      })
+    } else if (scanContainer) {
+      // Create cards from mock data
+      mockScans.forEach(scan => {
+        const scanDate = new Date(scan.date)
+        const formattedDate = scanDate.toLocaleDateString()
+        
+        const scanCard = document.createElement('div')
+        scanCard.className = 'scan-card'
+        scanCard.setAttribute('data-plant', scan.plantName)
+        scanCard.setAttribute('data-disease', scan.disease)
+        scanCard.setAttribute('data-status', scan.status)
+        scanCard.setAttribute('data-date', scan.date)
+        scanCard.setAttribute('tabindex', '0')
+        
+        scanCard.innerHTML = `
+          <div class="scan-card-image">
+            <img src="${scan.image}" alt="${scan.plantName} - ${scan.disease}">
+            <div class="status-indicator ${scan.status}"></div>
+          </div>
+          <div class="scan-card-content">
+            <h3 class="plant-name">${scan.plantName}</h3>
+            <p class="disease-name">${scan.disease}</p>
+            <div class="scan-meta">
+              <span class="scan-date">${formattedDate}</span>
+              <span class="confidence">
+                <span class="confidence-label">Confidence:</span>
+                <span class="confidence-value">${scan.confidence}%</span>
+              </span>
+            </div>
+            <button class="btn btn-view-details">View Details</button>
+          </div>
+        `
+        
+        scanContainer.appendChild(scanCard)
+        
+        // Add click events
+        scanCard.style.cursor = "pointer"
+        
+        scanCard.addEventListener("click", (e) => {
+          if (
+            e.target.tagName === "BUTTON" ||
+            e.target.tagName === "A" ||
+            e.target.closest("button") ||
+            e.target.closest("a")
+          ) {
+            return
+          }
+          goToScanDetails(scan)
+        })
+        
+        const viewDetailsBtn = scanCard.querySelector(".btn-view-details")
+        if (viewDetailsBtn) {
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation()
+            goToScanDetails(scan)
+          })
+        }
+      })
     }
   }
 }
