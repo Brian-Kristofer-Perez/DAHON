@@ -175,16 +175,16 @@
             "Grape: Leaf Blight",
             "Grape: Black Rot",
             "Grape: Esca (Black Measles)",
-            "Cherry: Powdery Mildew",
-            "Bell pepper: Bacterial Spot",
-            "Bell pepper: Phytophthora Blight",
-            "Orange: Huanglongbing (Citrus Greening)",
+            "Cherry (including sour): Powdery Mildew",
+            "Bell Pepper: Bacterial Spot",
+            "Bell Pepper: Phytophthora Blight",
+            "Orange: Haunglongbing (Citrus Greening)",
             "Squash: Powdery Mildew",
             "Potato: Late Blight",
             "Potato: Early Blight",
-            "Corn: Northern Corn Leaf Blight",
-            "Corn: Gray Leaf Spot",
-            "Corn: Common Rust",
+            "Corn (Maize): Northern Corn Leaf Blight",
+            "Corn (Maize): Gray Leaf Spot",
+            "Corn (Maize): Common Rust",
             "Peach: Bacterial Spot",
             "Apple: Apple Scab",
             "Apple: Black Rot",
@@ -202,9 +202,19 @@
                 
                 // Filter the disease list for the current plant only if plant parameter is available
                 const filteredDiseasesList = plantParam 
-                    ? diseasesList.filter(item => item.startsWith(plantParam + ": "))
+                    ? diseasesList.filter(item => {
+                        // Split the disease string at the colon to get the plant part
+                        const plantPart = item.split(':')[0].trim();
+                        
+                        // Check if the plant part equals or starts with the plant parameter
+                        // This handles cases like "Corn" matching "Corn (Maize)" or "Cherry" matching "Cherry (including sour)"
+                        return plantPart === plantParam || 
+                               plantPart.startsWith(plantParam + ' (') ||
+                               plantPart.indexOf(' ' + plantParam + ' ') >= 0;
+                    })
                     : diseasesList;
                 
+                console.log("Filtered diseases list:", filteredDiseasesList);
                 // Process each disease from the filtered list
                 for (const item of filteredDiseasesList) {
                     dtfParam = new URLSearchParams();
@@ -220,9 +230,12 @@
                     }
                     
                     const diseaseData = await response.json();
+                    console.log("Disease data:", diseaseData);
                     
                     // Extract plant name from the string to organize in our object
-                    const plantName = item.split(': ')[0];
+                    const plantName = item.split(':')[0].replace(/\(.*?\)/g, '').trim();
+
+                    console.log("Plant name:", plantName);
                     
                     // Initialize plant array if it doesn't exist
                     if (!tempDiseases[plantName]) {
