@@ -244,6 +244,7 @@ async def update_user(
 @app.post("/api/get-plant-disease")
 async def get_plant_disease(disease: str = Query(...)):
     try:
+        print(disease)
         # Fetch plant disease details from the database
         details = db.query_disease(disease)
         if not details:
