@@ -261,8 +261,8 @@
             const searchTerm = e.target.value.toLowerCase();
             
             plantCards.forEach(card => {
-                const plantName = card.querySelector('h3').textContent;
-                const plantDesc = card.querySelector('p').textContent;
+                const plantName = card.querySelector('h3').textContent.toLowerCase();
+                const plantDesc = card.querySelector('p').textContent.toLowerCase();
                 
                 if (plantName.includes(searchTerm) || plantDesc.includes(searchTerm)) {
                     card.style.display = 'block';
